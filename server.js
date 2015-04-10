@@ -4,8 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('Greenfield:server');
+var app = require('./server/app.js');
 var http = require('http');
 
 /**
@@ -86,5 +85,4 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
 }

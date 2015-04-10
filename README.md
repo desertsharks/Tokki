@@ -8,3 +8,6 @@
 
 ###Install other dependencies
   `npm install`
+
+###Install other dependencies
+  `bower install`
