@@ -6,8 +6,8 @@
 ###Install the grunt-cli
   `npm install -g grunt-cli`
 
-###Install other dependencies
+###Install npm dependencies
   `npm install`
 
-###Install other dependencies
+###Install bower dependencies
   `bower install`
