@@ -2,12 +2,14 @@
 
 var Backbone = require('backbone');
 var SessionModel = require('../models/SessionModel').SessionModel;
-var SessionsCollection = Backbone.Collection.extend({
+exports.SessionsCollection = Backbone.Collection.extend({
   model: SessionModel,
 
-  // Creates a new session and returns its unique identifier
-  create: function() {
-    return exports.SessionsCollection.prototype.create.apply(this, arguments).cid;
+  // Adds a new session and returns its unique identifier
+  addNewSession: function() {
+    var session = new SessionModel();
+    this.add(session);
+    return session.cid;
   },
 
   // Wrappers for SessionModel methods for convenience
@@ -21,11 +23,11 @@ var SessionsCollection = Backbone.Collection.extend({
     }
   },
   getCurrentAverage: function(sessionId) {
-    return this.get(sessionId).getCurrentAverage;
+    return this.get(sessionId).getCurrentAverage();
   },
   getHistoricalAverage: function(sessionId) {
-    return this.get(sessionId).getHistoricalAverage;
+    return this.get(sessionId).getHistoricalAverage();
   }
 });
 
-exports.sessions = new SessionsCollection();
+exports.sessions = new exports.SessionsCollection();

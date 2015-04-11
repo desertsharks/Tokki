@@ -9,4 +9,4 @@ module.exports = function(app) {
   // Calls update
   exports.listener = function() {};
 
-}
+};
