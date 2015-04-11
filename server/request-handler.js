@@ -31,13 +31,34 @@ exports.registerSession = function(hostId) {};
 // --------------------------Firebase Methods-------------------------------- //
 var Firebase = require("firebase");
 
-exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
+exports.openSessionInDB =function(sessionId, startTime){
+//Opens a new session when created by the host
 
+  var dbRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
+  dbRef.child(sessionId).set({
+    "endTime": startTime,
+    "endTime": null
+  });
+
+};
+
+exports.closeSessionInDB = function(sessionId, endTime){
+//Adds an endTime property to sessionId object
+  var dbRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
+
+  dbRef.update({
+    "endTime": endTime
+  });
+
+};
+
+exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
+//Adds Votes into the database for an existing session
   var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
   //Look up the session ID
   //If it exists, push a new {userID, timeStamp, voteVal} into that session
-  if(sessionRef.child(sessionId)){
+  if(sessionRef.child(sessionId)){  //may still want an if-check but will call openSessionInDB
     sessionRef.child(sessionId).push({
         guestId: guestId,
         voteVal: voteVal,
@@ -51,7 +72,9 @@ exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
           guestId: guestId,
           voteVal: voteVal,
           timeStamp: timeStamp
-         }
+         },
+         startTime: startTime,
+         endTime:null
        });
   }
 
@@ -77,6 +100,7 @@ exports.getFromDB = function(sessionId){
 
  return sessionResults;
 };
+
 
 
 // --------------------------Current Sessions-------------------------------- //
