@@ -8,12 +8,12 @@ exports.SessionModel = Backbone.Model.extend({
     this.set('votes', new VoteCollection());
 
     // Used to compute current average
-    this.set('sumVotes', 0);
-    this.set('countVotes', 0);
+    this.set('sumVoteVals', 0);
+    this.set('voteCount', 0);
 
     // Used to compute historical average
-    this.set('sumSteps', 0);
-    this.set('countSteps', 0);
+    this.set('cumSumVoteVals', 0);
+    this.set('sumVoteCounts', 0);
 
     this.set('interval', params.interval);
     if (this.get('interval') {
@@ -27,13 +27,13 @@ exports.SessionModel = Backbone.Model.extend({
   },
 
   // Changes the voteVal of an existing user
-  // Updates sumVotes and countVotes
+  // Updates sumVoteVals and voteCount
   // Returns if voteVals are distinct
   changeVote: function(userId, voteVal) {
     var vote = this.get('votes').get(userId);
     if (voteVal !== vote.get('voteVal') {
-      this.set('sumVotes', this.get('sumVotes') + voteVal - vote.get('voteVal'));
-      this.set('countVotes', this.get('countVotes') + (voteVal !== null) - vote.get('voteVal' !== null));
+      this.set('sumVoteVals', this.get('sumVoteVals') + voteVal - vote.get('voteVal'));
+      this.set('voteCount', this.get('voteCount') + (voteVal !== null) - vote.get('voteVal' !== null));
       vote.set('voteVal', voteVal);
       return true;
     }
@@ -41,19 +41,17 @@ exports.SessionModel = Backbone.Model.extend({
   },
 
   // Updates historical average data every interval
+  // Averages by number of votes
   update: function() {
-    // Make sure we are not adding NaN (0/0) cases
-    if (this.get('countVotes')) {
-      this.set('sumSteps', this.get('sumSteps') + this.getCurrentAverage());
-      this.set('countSteps', this.get('countSteps') + 1);
-    }
+    this.set('cumSumVoteVals', this.get('cumSumVoteVals') + this.get('sumVoteVals'));
+    this.set('sumVoteCounts', this.get('sumVoteCounts') + this.get('voteCount'));
   },
 
   getCurrentAverage: function() {
-    return this.get('sumVotes') / this.get('countVotes');
+    return this.get('sumVoteVals') / this.get('voteCount');
   },
 
   getHistoricalAverage: function() {
-    return this.get('sumSteps') / this.get('countSteps');
+    return this.get('cumSumVoteVals') / this.get('sumVoteCounts');
   }
 };
