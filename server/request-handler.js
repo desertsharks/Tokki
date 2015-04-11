@@ -29,11 +29,54 @@ exports.calculateStats = function(session) {};
 exports.registerSession = function(hostId) {};
 
 // --------------------------Firebase Methods-------------------------------- //
+var Firebase = require("firebase");
 
-exports.addToDB = function(guestId, sessionId, voteVal, timestamp) {};
+exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
 
-// For post session host review
-exports.getFromDB = function(sessionId) {};
+  var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
+
+  //Look up the session ID
+  //If it exists, push a new {userID, timeStamp, voteVal} into that session
+  if(sessionRef.child(sessionId)){
+    sessionRef.child(sessionId).push({
+        guestId: guestId,
+        voteVal: voteVal,
+        timeStamp: timeStamp
+       }
+    });
+  }
+  else{  //Create a new session child
+   sessionRef.push({
+        sessionId: {
+          guestId: guestId,
+          voteVal: voteVal,
+          timeStamp: timeStamp
+         }
+       });
+  }
+
+//Notification of votes for testing purposes
+  // ref.on("child_changed", function(snapshot) {
+  //   var newVote = snapshot.val();
+  //   console.log("User# "+newVote.guestId+ " just voted "  + newVote.voteVal);
+  // });
+
+
+};
+
+exports.getFromDB = function(sessionId){
+//Intended for post-session data analysis by host
+//Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
+
+  var sessionResults = [];
+  var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
+
+  sessionRef.orderByChild("session").equalTo(sessionId).on("child_added", function(snapshot) {
+    sessionResults.push(snapshot.key());
+  });
+
+ return sessionResults;
+};
 
 
 // --------------------------Current Sessions-------------------------------- //
