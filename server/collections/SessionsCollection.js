@@ -2,7 +2,7 @@
 
 var Backbone = require('backbone');
 var SessionModel = require('../models/SessionModel').SessionModel;
-exports.SessionsCollection = Backbone.Collection.extend({
+var SessionsCollection = Backbone.Collection.extend({
   model: SessionModel,
 
   // Creates a new session and returns its unique identifier
@@ -15,8 +15,9 @@ exports.SessionsCollection = Backbone.Collection.extend({
     return this.get(sessionId).addUser();
   },
   changeVote: function(sessionId, userId, voteVal) {
+    // If this value has changed
     if(this.get(sessionId).changeVote(userId, voteVal)) {
-      // update firebase with sessionid, userid, voteval, and timestamp
+      // update firebase with sessionid, userid, voteval, and stepCount
     }
   },
   getCurrentAverage: function(sessionId) {
@@ -26,3 +27,5 @@ exports.SessionsCollection = Backbone.Collection.extend({
     return this.get(sessionId).getHistoricalAverage;
   }
 });
+
+exports.sessions = new SessionsCollection();
