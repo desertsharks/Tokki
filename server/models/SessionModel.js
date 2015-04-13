@@ -15,6 +15,8 @@ exports.SessionModel = Backbone.Model.extend({
     this.set('cumSumVoteVals', 0);
     this.set('sumVoteCounts', 0);
 
+    this.set('stepCount', 0);
+
     if (params && params.interval) {
       this.set('interval', params.interval);
       this.set('intervalObject', setInterval(this.update.bind(this), this.get('interval')));
@@ -35,9 +37,9 @@ exports.SessionModel = Backbone.Model.extend({
       this.set('sumVoteVals', this.get('sumVoteVals') + voteVal - vote.get('voteVal'));
       this.set('voteCount', this.get('voteCount') + (voteVal !== null) - (vote.get('voteVal') !== null));
       vote.set('voteVal', voteVal);
-      return true;
+      return [true, this.get('stepCount')];
     }
-    return false;
+    return [false, this.get('stepCount')];
   },
 
   // Updates historical average data every interval
@@ -45,6 +47,7 @@ exports.SessionModel = Backbone.Model.extend({
   update: function() {
     this.set('cumSumVoteVals', this.get('cumSumVoteVals') + this.get('sumVoteVals'));
     this.set('sumVoteCounts', this.get('sumVoteCounts') + this.get('voteCount'));
+    this.set('stepCount', this.get('stepCount') + 1);
   },
 
   getCurrentAverage: function() {
