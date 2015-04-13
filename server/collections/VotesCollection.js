@@ -5,8 +5,10 @@ var VoteModel = require('../models/VoteModel').VoteModel;
 exports.VotesCollection = Backbone.Collection.extend({
   model: VoteModel,
 
-  // Creates a new vote and returns its unique identifier
-  create: function() {
-    return exports.VoteCollection.prototype.create.apply(this, arguments).cid;
+  // Adds a new user and his or her default vote and returns its unique identifier
+  addNewUser: function() {
+    var user = new VoteModel();
+    this.add(user);
+    return user.cid;
   }
 });
