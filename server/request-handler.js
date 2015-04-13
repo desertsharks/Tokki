@@ -36,7 +36,7 @@ exports.openSessionInDB =function(sessionId, startTime){
 
   var dbRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
   dbRef.child(sessionId).set({
-    "endTime": startTime,
+    "startTime": startTime,
     "endTime": null
   });
 
@@ -60,21 +60,20 @@ exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
   //If it exists, push a new {userID, timeStamp, voteVal} into that session
   if(sessionRef.child(sessionId)){  //may still want an if-check but will call openSessionInDB
     sessionRef.child(sessionId).push({
-        guestId: guestId,
-        voteVal: voteVal,
-        timeStamp: timeStamp
+        "guestId": guestId,
+        "voteVal": voteVal,
+        "timeStamp": timeStamp
        }
     });
-  }
-  else{  //Create a new session child
+  } else {  //Create a new session child
    sessionRef.push({
         sessionId: {
-          guestId: guestId,
-          voteVal: voteVal,
-          timeStamp: timeStamp
+          "guestId": guestId,
+          "voteVal": voteVal,
+          "timeStamp": timeStamp
          },
-         startTime: startTime,
-         endTime:null
+         "startTime": startTime,
+         "endTime": null
        });
   }
 
