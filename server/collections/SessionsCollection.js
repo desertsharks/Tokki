@@ -17,9 +17,12 @@ exports.SessionsCollection = Backbone.Collection.extend({
     return this.get(sessionId).addUser();
   },
   changeVote: function(sessionId, userId, voteVal) {
+    // Returns [hasChanged, stepCount]
+    var changeVoteParams = this.get(sessionId).changeVote(userId, voteVal);
     // If this value has changed
-    if(this.get(sessionId).changeVote(userId, voteVal)) {
+    if(changeVoteParams[0]) {
       // update firebase with sessionid, userid, voteval, and stepCount
+      // addEntry(sessionId, userId, voteVal, changeVoteParams[1]);
     }
   },
   getCurrentAverage: function(sessionId) {

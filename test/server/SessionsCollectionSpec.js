@@ -39,5 +39,19 @@ describe('SessionsCollection', function() {
       sessions.get(sessionId).update();
       expect(sessions.getHistoricalAverage(sessionId)).to.equal(2);
     });
+    it('returns whether and when the vote changed', function() {
+      var sessionId = sessions.addNewSession();
+      var userId = sessions.addUser(sessionId);
+
+      sessions.get(sessionId).update();
+      var changeVoteParams1 = sessions.get(sessionId).changeVote(userId, 2);
+      expect(changeVoteParams1[0]).to.be.true;
+      expect(changeVoteParams1[1]).to.equal(1);
+
+      sessions.get(sessionId).update();
+      var changeVoteParams2 = sessions.get(sessionId).changeVote(userId, 2);
+      expect(changeVoteParams2[0]).to.be.false;
+      expect(changeVoteParams2[1]).to.equal(2);
+    });
   });
 });
