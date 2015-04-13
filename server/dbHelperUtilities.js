@@ -1,33 +1,3 @@
-// All of the server functions, to refactor later
-
-// ---------------------------Guest Methods---------------------------------- //
-
-// Initiates socket.io
-// Returns guestId
-exports.registerGuest = function(sessionId){};
-
-// Listens for guest websocket events
-// Calls update
-exports.listener = function() {};
-
-// Takes in guest data
-// Adds a timestamp via Moment
-// If voteVal, updates hot copy and calls addToDB
-exports.update = function(guestId, sessionId, voteVal) {};
-
-// --------------------------Host Methods------------------------------------ //
-
-// Calls calculateStats and notifies host on a setInterval
-exports.notifyHost = function() {};
-
-// Calculates the aggregate stats from cache
-// Returns current and average
-exports.calculateStats = function(session) {};
-
-// Return a sessionId
-// Begins listening to a session
-exports.registerSession = function(hostId) {};
-
 // --------------------------Firebase Methods-------------------------------- //
 var Firebase = require("firebase");
 

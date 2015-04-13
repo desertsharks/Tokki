@@ -2,10 +2,10 @@
 // holds aggregate statistics
 
 var Backbone = require('backbone');
-var VoteCollection = require('../collections/VoteCollection').VoteCollection;
+var VotesCollection = require('../collections/VotesCollection').VotesCollection;
 exports.SessionModel = Backbone.Model.extend({
   initialize: function(params) {
-    this.set('votes', new VoteCollection());
+    this.set('votes', new VotesCollection());
 
     // Used to compute current average
     this.set('sumVoteVals', 0);
@@ -15,15 +15,15 @@ exports.SessionModel = Backbone.Model.extend({
     this.set('cumSumVoteVals', 0);
     this.set('sumVoteCounts', 0);
 
-    this.set('interval', params.interval);
-    if (this.get('interval') {
+    if (params && params.interval) {
+      this.set('interval', params.interval);
       this.set('intervalObject', setInterval(this.update.bind(this), this.get('interval')));
     }
   },
 
   // Adds a new user and returns its id
   addUser: function() {
-    return this.get('votes').create();
+    return this.get('votes').addNewUser();
   },
 
   // Changes the voteVal of an existing user
@@ -31,9 +31,9 @@ exports.SessionModel = Backbone.Model.extend({
   // Returns if voteVals are distinct
   changeVote: function(userId, voteVal) {
     var vote = this.get('votes').get(userId);
-    if (voteVal !== vote.get('voteVal') {
+    if (voteVal !== vote.get('voteVal')) {
       this.set('sumVoteVals', this.get('sumVoteVals') + voteVal - vote.get('voteVal'));
-      this.set('voteCount', this.get('voteCount') + (voteVal !== null) - vote.get('voteVal' !== null));
+      this.set('voteCount', this.get('voteCount') + (voteVal !== null) - (vote.get('voteVal') !== null));
       vote.set('voteVal', voteVal);
       return true;
     }
@@ -54,4 +54,4 @@ exports.SessionModel = Backbone.Model.extend({
   getHistoricalAverage: function() {
     return this.get('cumSumVoteVals') / this.get('sumVoteCounts');
   }
-};
+});

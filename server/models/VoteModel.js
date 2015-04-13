@@ -6,4 +6,4 @@ exports.VoteModel = Backbone.Model.extend({
   defaults: {
     voteVal: null
   }
-};
+});
