@@ -17,15 +17,16 @@ exports.SessionModel = Backbone.Model.extend({
 
     this.set('stepCount', 0);
 
-    if (params && params.interval) {
-      this.set('interval', params.interval);
-      this.set('intervalObject', setInterval(this.update.bind(this), this.get('interval')));
-    }
+    params = params || {};
+    params.interval = params.interval || 2000;
+
+    this.set('interval', params.interval);
+    this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
   },
 
   // Adds a new user and returns its id
-  addUser: function() {
-    return this.get('votes').addNewUser();
+  addUser: function(userId) {
+    this.get('votes').addNewUser(userId);
   },
 
   // Changes the voteVal of an existing user
@@ -33,6 +34,10 @@ exports.SessionModel = Backbone.Model.extend({
   // Returns if voteVals are distinct
   changeVote: function(userId, voteVal) {
     var vote = this.get('votes').get(userId);
+    if (!vote) {
+      this.addUser(userId);
+      vote = this.get('votes').get(userId);
+    }
     if (voteVal !== vote.get('voteVal')) {
       this.set('sumVoteVals', this.get('sumVoteVals') + voteVal - vote.get('voteVal'));
       this.set('voteCount', this.get('voteCount') + (voteVal !== null) - (vote.get('voteVal') !== null));
@@ -44,7 +49,7 @@ exports.SessionModel = Backbone.Model.extend({
 
   // Updates historical average data every interval
   // Averages by number of votes
-  update: function() {
+  _update: function() {
     this.set('cumSumVoteVals', this.get('cumSumVoteVals') + this.get('sumVoteVals'));
     this.set('sumVoteCounts', this.get('sumVoteCounts') + this.get('voteCount'));
     this.set('stepCount', this.get('stepCount') + 1);
