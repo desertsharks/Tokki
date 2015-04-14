@@ -1,13 +1,5 @@
-var sessions = require('../SessionsCollection').sessions;
+var sessions = require('../collections/SessionsCollection').sessions;
 
-// Initiates socket.io
-// Returns guestId
-exports.registerGuest = function(req, res){
-  // Takes in sessionId
-  // Returns guestId
+exports.redirect = function(req, res) {
+  res.redirect('/#/guest/' + (req.params.sessionId || ''));
 };
-
-// Takes in guest data
-// Adds a timestamp via Moment
-// If voteVal, updates hot copy and calls addToDB
-exports.update = function(guestId, sessionId, voteVal) {};
