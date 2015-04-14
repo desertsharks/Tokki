@@ -1,12 +1,20 @@
-var sessions = require('../SessionsCollection').sessions;
-
-// Calls calculateStats and notifies host on a setInterval
-exports.notifyHost = function() {};
+var sessions = require('../collections/SessionsCollection').sessions;
+var socketUtils = require('../utils/socketUtils');
 
 // Calculates the aggregate stats from cache
 // Returns current and average
-exports.calculateStats = function(session) {};
+exports.calculateStats = function(sessionId, cb) {};
 
 // Return a sessionId
 // Begins listening to a session
-exports.registerSession = function(hostId) {};
+exports.registerSession = function(req, res) {
+  var sessionId = sessions.addNewSession();
+  res.send(sessionId); // Client will redirect to /#/host/sessionId
+  socketUtils.init(sessionId, exports.notifyHost);
+};
+
+exports.login = function(req, res) {};
+
+exports.redirect = function(req, res) {
+  res.redirect('/#/host/' + (req.params.sessionId || ''));
+};

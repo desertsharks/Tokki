@@ -17,18 +17,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../public/client')));
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
   res.sendFile('/index.html');
 });
 
-guestRouter.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
-
-app.use('/guests', guestRouter);
+app.use('/guest', guestRouter);
 app.use('/host', hostRouter);
 
 require('./routers/guestRouter')(guestRouter);
