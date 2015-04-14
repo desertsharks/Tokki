@@ -22,7 +22,7 @@ exports.closeSessionInDB = function(sessionId, endTime){
 
 };
 
-exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
+exports.addToDB = function(sessionId, guestId, voteVal, timeStep) {
 //Adds Votes into the database for an existing session
   var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
@@ -32,7 +32,7 @@ exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
     sessionRef.child(sessionId).push({
         "guestId": guestId,
         "voteVal": voteVal,
-        "timeStamp": timeStamp
+        "timeStep": timeStep
        }
     });
   } else {  //Create a new session child
@@ -40,7 +40,7 @@ exports.addToDB = function(sessionId, guestId, voteVal, timeStamp) {
         sessionId: {
           "guestId": guestId,
           "voteVal": voteVal,
-          "timeStamp": timeStamp
+          "timeStep": timeStep
          },
          "startTime": startTime,
          "endTime": null
