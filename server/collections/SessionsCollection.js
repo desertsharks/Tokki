@@ -13,8 +13,8 @@ exports.SessionsCollection = Backbone.Collection.extend({
   },
 
   // Wrappers for SessionModel methods for convenience
-  addUser: function(sessionId) {
-    return this.get(sessionId).addUser();
+  addUser: function(sessionId, userId) {
+    return this.get(sessionId).addUser(userId);
   },
   changeVote: function(sessionId, userId, voteVal) {
     // Returns [hasChanged, stepCount]
@@ -24,6 +24,7 @@ exports.SessionsCollection = Backbone.Collection.extend({
       // update firebase with sessionid, userid, voteval, and stepCount
       // addEntry(sessionId, userId, voteVal, changeVoteParams[1]);
     }
+    return changeVoteParams;
   },
   getCurrentAverage: function(sessionId) {
     return this.get(sessionId).getCurrentAverage();
