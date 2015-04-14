@@ -32,13 +32,16 @@ app.factory('HostServices', function($http) {
   };
 
   // emit end to end a session
-  var vote = function() {
-    socket.emit('end');
+  var endSession = function() {
+    if(session.socket){
+      socket.emit('end');
+    }
   };
 
   return {
     startSession: startSession,
-    listen: listen
+    listen: listen,
+    endSession: endSession
   };
 
 });
