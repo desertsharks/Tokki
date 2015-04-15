@@ -1,7 +1,8 @@
 <!-- This is the home screen where the user may either log into an existing session, or host a new one -->
 
-<input id="login" type="text" name="input" value="Enter Session Id">
+<!-- the onfocus attribute clears the text field when a user clicks on the text field. -->
+<input id="login" type="text" name="input" value="Enter Session Id" onfocus="if (this.value == 'Enter Session Id') this.value = '' ">
 
 <h3>- or -</h3>
 
-<button class="start-session">Host a Session</button>
+<button class="start-session" ng-click="startSession()">Host a Session</button>
