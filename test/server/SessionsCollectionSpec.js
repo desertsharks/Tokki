@@ -37,6 +37,7 @@ describe('SessionsCollection', function() {
       expect(sessions.getUserCount(sessionId)).to.equal(1);
     });
     it('creates a user if the vote of a non-existent user is changed', function() {
+      sessions.changeVote(sessionId, userId, 2);
       userId = 'aBP9S-wzDhqJFBwfAAAC';
       sessions.changeVote(sessionId, userId, 2);
       expect(sessions.getUserCount(sessionId)).to.equal(2);
