@@ -1,9 +1,10 @@
 // Socket helper functions
-app.factory('HostServices', function($http) {
+angular.module('greenfield')
+  .factory('HostServices', function($http) {
 
   var session = {
     id: '',
-    url: 'localhost:4000/host/', // NB: I believe a relative path is sufficient for both http and socket.io
+    url: 'localhost:4000/host/',
     socket: null
   };
 
@@ -21,12 +22,12 @@ app.factory('HostServices', function($http) {
 
   // Initiates socket connection
   // Listens for socket events
-  var listen = function() {
+  var listen = function(cb) {
     session.socket = io.connect(session.url + session.id);
     session.socket.on('connect', function() {
       // Listens for stats
       session.socket.on('stats', function(data) {
-        // TODO: Display Stats
+        cb(data);
       });
     });
   };

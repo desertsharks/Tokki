@@ -1,18 +1,19 @@
-app.controller('hostController', ['$scope', 'hostServices', function($scope, hostServices) {
+angular.module('greenfield')
+  .controller('HostController', ['$scope', 'HostServices', function($scope, HostServices) {
 
   $scope.data = {};
 
   // Opens a new session
   $scope.startSession = function() {
-    hostServices.startSession()
-      .then(function(){
-        listen();
-      });
+    HostServices.startSession()
+      .then(HostServices.listen.bind(null, function(data){
+        console.log(data);
+      }));
   };
 
   // Ends a session
   $scope.endSession = function() {
-
+    HostServices.endSession();
   };
 
 }]);
