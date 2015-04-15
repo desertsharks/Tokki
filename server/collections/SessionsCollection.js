@@ -8,13 +8,16 @@ exports.SessionsCollection = Backbone.Collection.extend({
   model: SessionModel,
 
   // Adds a new session and returns its unique identifier
-  addNewSession: function() {
-    var session = new SessionModel({collection: this});
+  addNewSession: function(params) {
+    params = params || {};
+    params.collection = this;
+    var session = new SessionModel(params);
     this.add(session);
     return session.cid;
   },
   removeSession: function(sessionId) {
-    if(this.remove(sessionId)) {
+    var session = this.remove(sessionId);
+    if(session && !session.get('debug')) {
       dbUtils.closeSessionInDb(sessionId);
     }
   },

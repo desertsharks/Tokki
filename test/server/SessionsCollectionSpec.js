@@ -10,7 +10,7 @@ describe('SessionsCollection', function() {
 
   beforeEach(function() {
     sessions = new SessionsCollection();
-    sessionId = sessions.addNewSession();
+    sessionId = sessions.addNewSession({debug: true});
     userId = '0-EbQqhSIEZK8R8KAAAB';
     sessions.addUser(sessionId, userId);
   });

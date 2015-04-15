@@ -69,22 +69,3 @@ exports.getFromDb = function(sessionId) {
 
   return sessionResults;
 };
-
-// --------------------------Current Sessions-------------------------------- //
-// { // Holds all concurrent sessions
-//   sessionId1:  { // Used to calculate current average
-//     users: {
-//       guestId1: 2, // Current voteVals
-//       guestId2: 2,
-//       guestId40: null
-//     }
-//     stats: { // Used to calculate session average
-//       total: 1323432523,
-//       time: 324232
-//     }
-//   },
-//
-//   sessionId2: {
-//     [...]
-//   }
-// }
