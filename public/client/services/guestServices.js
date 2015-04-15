@@ -4,8 +4,7 @@ angular.module('greenfield')
 
   var session = {
     id: '',
-    // TODO: Establish url
-    url: 'localhost:4000/guest/',
+    url: '/guest',
     socket: null
   };
 
@@ -14,7 +13,7 @@ angular.module('greenfield')
     session.id = sessionId;
     return $http({
       method: 'GET',
-      url: '/guest/' + sessionId
+      url: session.url + '/' + sessionId
     })
     .then(function(resp) {
       return resp.data;
@@ -24,7 +23,7 @@ angular.module('greenfield')
   // Initiates socket connection
   // Listens for socket events
   var listen = function(cb) {
-    session.socket = io.connect(url + session.id);
+    session.socket = io.connect(window.location.host + '/' + session.id);
     session.socket.on('connect', function() {
       // Listens for end of session
       session.socket.on('end', function(data) {

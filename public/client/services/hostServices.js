@@ -4,7 +4,7 @@ angular.module('greenfield')
 
   var session = {
     id: '',
-    url: 'localhost:4000/host/',
+    url: '/host',
     socket: null
   };
 
@@ -23,7 +23,8 @@ angular.module('greenfield')
   // Initiates socket connection
   // Listens for socket events
   var listen = function(cb) {
-    session.socket = io.connect(session.url + session.id);
+    console.log(window.location.host)
+    session.socket = io.connect(window.location.host + '/' + session.id);
     session.socket.on('connect', function() {
       // Listens for stats
       session.socket.on('stats', function(data) {
