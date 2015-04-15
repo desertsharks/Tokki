@@ -45,7 +45,6 @@ exports.SessionModel = Backbone.Model.extend({
 
   // Changes the voteVal of an existing user
   // Updates sumVoteVals and voteCount
-  // Returns if voteVals are distinct
   changeVote: function(userId, voteVal) {
     var vote = this.get('votes').get(userId);
     if (!vote) {
@@ -82,6 +81,7 @@ exports.SessionModel = Backbone.Model.extend({
   },
 
   getUserCount: function() {
-    return this.get('votes').length;
+    // Counts only 'active' users
+    return this.get('voteCount');
   }
 });
