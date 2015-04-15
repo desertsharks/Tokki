@@ -22,25 +22,26 @@ app.factory('HostServices', function($http) {
   // Initiates socket connection
   // Listens for socket events
   var listen = function() {
-    var socket = io.connect(session.url + session.id);
-    socket.on('connect', function() {
+    session.socket = io.connect(session.url + session.id);
+    session.socket.on('connect', function() {
       // Listens for stats
-      socket.on('stats', function(data) {
+      session.socket.on('stats', function(data) {
         // TODO: Display Stats
       });
     });
   };
 
   // emit end to end a session
-  var vote = function() {
-    socket.emit('end');
+  var endSession = function() {
+    if(session.socket){
+      session.socket.emit('end');
+    }
   };
 
   return {
     startSession: startSession,
-    listen: listen
+    listen: listen,
+    endSession: endSession
   };
 
 });
-
-

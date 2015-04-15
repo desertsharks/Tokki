@@ -40,12 +40,15 @@ app.factory('GuestServices', function($http) {
 
   // Sends vote
   var vote = function(voteData) {
-    session.socket.emit(voteData);
+    if(session.socket){
+      session.socket.emit(voteData);
+    }
   };
 
   return {
     getSession: getSession,
-    listen: listen
+    listen: listen,
+    vote: vote
   };
 
 });

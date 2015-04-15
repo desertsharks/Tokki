@@ -5,26 +5,29 @@ var app = angular.module('greenfield', ['ui.router']);
 app.config(function($stateProvider, $urlRouterProvider) {
   //If an unknown route is entered, it redirects to the home page.
   $urlRouterProvider.otherwise('/home');
-  //Routes to the home page 
+  //Routes to the home page
   $stateProvider
     .state('home', {
       url: '/home',
-      templateUrl: './views/homeView.html'
+      templateUrl: './views/homeView.html',
+      controller: 'loginController'
     })
     //Routes to the guest session view
     .state('guestSession', {
       url: '/guestSession',
-      templateUrl: './views/guestSession.html'
+      templateUrl: './views/guestSession.html',
+      controller: 'guestController'
     })
     //Routes to the host menu
     .state('hostMenu', {
       url: '/hostMenu',
-      templateUrl: './views/hostMenu.html'
+      templateUrl: './views/hostMenu.html',
+      controller: 'hostController'
     })
     //Routes to the hosts current session
     .state('hostSession', {
       url: '/hostSession',
-      templateUrl: './views/hostSession.html'
+      templateUrl: './views/hostSession.html',
+      controller: 'hostController'
     });
 });
-
