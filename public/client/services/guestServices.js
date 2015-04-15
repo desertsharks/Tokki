@@ -1,10 +1,11 @@
 // Socket helper functions
-app.factory('GuestServices', function($http) {
+angular.module('greenfield')
+  .factory('GuestServices', function($http) {
 
   var session = {
     id: '',
     // TODO: Establish url
-    url: 'localhost:4000/guest/', // NB: I believe a relative path is sufficient for both http and socket.io
+    url: 'localhost:4000/guest/',
     socket: null
   };
 
@@ -22,18 +23,12 @@ app.factory('GuestServices', function($http) {
 
   // Initiates socket connection
   // Listens for socket events
-  var listen = function() {
+  var listen = function(cb) {
     session.socket = io.connect(url + session.id);
     session.socket.on('connect', function() {
-
-      // Listens for invalid room
-      session.socket.on('invalid', function(data) {
-        // TODO: Display a ui warning
-      });
-
       // Listens for end of session
       session.socket.on('end', function(data) {
-        // TODO: Activate end of session view
+        cb();
       });
     });
   };

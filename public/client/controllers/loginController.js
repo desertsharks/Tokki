@@ -1,4 +1,5 @@
-app.controller('loginController', ['$scope', 'loginServices', function($scope, loginServices) {
+angular.module('greenfield')
+  .controller('LoginController', ['$scope', 'LoginServices', function($scope, LoginServices) {
 
   $scope.data = {};
 
