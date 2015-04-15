@@ -2,9 +2,9 @@
 app.factory('GuestServices', function($http) {
 
   var session = {
-    id: "",
+    id: '',
     // TODO: Establish url
-    url: "localhost:4000/guest/",
+    url: 'localhost:4000/guest/', // NB: I believe a relative path is sufficient for both http and socket.io
     socket: null
   };
 

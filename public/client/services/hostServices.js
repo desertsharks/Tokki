@@ -2,8 +2,8 @@
 app.factory('HostServices', function($http) {
 
   var session = {
-    id: "",
-    url: "localhost:4000/host/",
+    id: '',
+    url: 'localhost:4000/host/', // NB: I believe a relative path is sufficient for both http and socket.io
     socket: null
   };
 
