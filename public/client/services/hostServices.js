@@ -9,7 +9,7 @@ app.factory('HostServices', function($http) {
 
   // Sends a request for a new session.
   // Receives the sessionID of that session.
-  var startSession = function(callback) {
+  var startSession = function() {
     return $http({
       method: 'POST',
       url: session.url
@@ -45,5 +45,3 @@ app.factory('HostServices', function($http) {
   };
 
 });
-
-

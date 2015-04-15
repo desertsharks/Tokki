@@ -31,4 +31,3 @@ app.config(function($stateProvider, $urlRouterProvider) {
       controller: 'hostController'
     });
 });
-
