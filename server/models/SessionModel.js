@@ -3,6 +3,8 @@
 
 var Backbone = require('backbone');
 var VotesCollection = require('../collections/VotesCollection').VotesCollection;
+var dbUtils = require('../utils/dbUtils');
+
 exports.SessionModel = Backbone.Model.extend({
   initialize: function(params) {
     this.set('votes', new VotesCollection());
@@ -22,9 +24,11 @@ exports.SessionModel = Backbone.Model.extend({
 
     this.set('interval', params.interval);
     this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
+
+    dbUtils.openSessionInDb(this.cid);
   },
 
-  // Adds a new user and returns its id
+  // Adds a new user with this id
   addUser: function(userId) {
     this.get('votes').addNewUser(userId);
   },
@@ -42,9 +46,9 @@ exports.SessionModel = Backbone.Model.extend({
       this.set('sumVoteVals', this.get('sumVoteVals') + voteVal - vote.get('voteVal'));
       this.set('voteCount', this.get('voteCount') + (voteVal !== null) - (vote.get('voteVal') !== null));
       vote.set('voteVal', voteVal);
-      return [true, this.get('stepCount')];
+
+      dbUtils.addToDb(this.cid, userId, voteVal, this.get('stepCount'));
     }
-    return [false, this.get('stepCount')];
   },
 
   // Updates historical average data every interval

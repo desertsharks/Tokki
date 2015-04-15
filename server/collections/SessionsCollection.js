@@ -2,6 +2,8 @@
 
 var Backbone = require('backbone');
 var SessionModel = require('../models/SessionModel').SessionModel;
+var dbUtils = require('../utils/dbUtils');
+
 exports.SessionsCollection = Backbone.Collection.extend({
   model: SessionModel,
 
@@ -11,26 +13,33 @@ exports.SessionsCollection = Backbone.Collection.extend({
     this.add(session);
     return session.cid;
   },
+  removeSession: function(sessionId) {
+    if(this.remove(sessionId)) {
+      dbUtils.closeSessionInDb(sessionId);
+    }
+  },
 
   // Wrappers for SessionModel methods for convenience
   addUser: function(sessionId, userId) {
-    return this.get(sessionId).addUser(userId);
+    if (this.get(sessionId)) {
+      this.get(sessionId).addUser(userId);
+    }
   },
   changeVote: function(sessionId, userId, voteVal) {
-    // Returns [hasChanged, stepCount]
-    var changeVoteParams = this.get(sessionId).changeVote(userId, voteVal);
-    // If this value has changed
-    if(changeVoteParams[0]) {
-      // update firebase with sessionid, userid, voteval, and stepCount
-      // addEntry(sessionId, userId, voteVal, changeVoteParams[1]);
+    // Returns hasChanged
+    if (this.get(sessionId)) {
+      this.get(sessionId).changeVote(userId, voteVal);
     }
-    return changeVoteParams;
   },
   getCurrentAverage: function(sessionId) {
-    return this.get(sessionId).getCurrentAverage();
+    if (this.get(sessionId)) {
+      return this.get(sessionId).getCurrentAverage();
+    }
   },
   getHistoricalAverage: function(sessionId) {
-    return this.get(sessionId).getHistoricalAverage();
+    if (this.get(sessionId)) {
+      return this.get(sessionId).getHistoricalAverage();
+    }
   }
 });
 

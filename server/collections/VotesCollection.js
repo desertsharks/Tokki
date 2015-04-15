@@ -2,6 +2,7 @@
 
 var Backbone = require('backbone');
 var VoteModel = require('../models/VoteModel').VoteModel;
+
 exports.VotesCollection = Backbone.Collection.extend({
   model: VoteModel,
 

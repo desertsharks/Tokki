@@ -30,27 +30,14 @@ describe('SessionsCollection', function() {
       sessions.get(sessionId)._update();
       expect(sessions.getHistoricalAverage(sessionId)).to.equal(2);
     });
-    it('returns whether and when the vote changed', function() {
-      sessions.get(sessionId)._update();
-      var changeVoteParams1 = sessions.changeVote(sessionId, userId, 2);
-      expect(changeVoteParams1[0]).to.equal(true);
-      expect(changeVoteParams1[1]).to.equal(1);
-
-      sessions.get(sessionId)._update();
-      var changeVoteParams2 = sessions.changeVote(sessionId, userId, 2);
-      expect(changeVoteParams2[0]).to.equal(false);
-      expect(changeVoteParams2[1]).to.equal(2);
-    });
     it('will have no effect if a user is added twice', function() {
       sessions.changeVote(sessionId, userId, 2);
       sessions.addUser(sessionId, userId);
-      var changeVoteParams = sessions.changeVote(sessionId, userId, 2);
-      expect(changeVoteParams[0]).to.equal(false);
+      expect(sessions.get(sessionId).get('votes').get(userId).get('voteVal')).to.equal(2);
     });
     it('will create a user if the vote of a non-existent user is changed', function() {
       userId = 'aBP9S-wzDhqJFBwfAAAC';
-      var changeVoteParams = sessions.changeVote(sessionId, userId, 2);
-      expect(changeVoteParams[0]).to.equal(true);
+      expect(sessions.get(sessionId).get('votes').get(userId).get('voteVal')).to.equal(2);
     });
   });
 });

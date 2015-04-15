@@ -1,62 +1,47 @@
-// --------------------------Firebase Methods-------------------------------- //
 var Firebase = require("firebase");
 
-exports.openSessionInDB =function(sessionId, startTime){
-//Opens a new session when created by the host
+// TODO: Auth
 
+exports.openSessionInDb =function(sessionId) {
+//Opens a new session when created by the host
   var dbRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
   dbRef.child(sessionId).set({
-    "startTime": startTime,
+    "startTime": Date.now(),
     "endTime": null
   });
-
 };
 
-exports.closeSessionInDB = function(sessionId, endTime){
+exports.closeSessionInDb = function(sessionId) {
 //Adds an endTime property to sessionId object
   var dbRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
-
-  dbRef.update({
-    "endTime": endTime
+  dbRef.child(sessionId).update({
+    "endTime": Date.now()
   });
-
 };
 
-exports.addToDB = function(sessionId, guestId, voteVal, timeStep) {
+exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
 //Adds Votes into the database for an existing session
   var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
   //Look up the session ID
   //If it exists, push a new {userID, timeStamp, voteVal} into that session
-  if(sessionRef.child(sessionId)){  //may still want an if-check but will call openSessionInDB
-    sessionRef.child(sessionId).push({
-        "guestId": guestId,
-        "voteVal": voteVal,
-        "timeStep": timeStep
-       }
-    });
-  } else {  //Create a new session child
-   sessionRef.push({
-        sessionId: {
-          "guestId": guestId,
-          "voteVal": voteVal,
-          "timeStep": timeStep
-         },
-         "startTime": startTime,
-         "endTime": null
-       });
+  if(!sessionRef.child(sessionId).val()) {
+    exports.openSessionInDb(sessionId);
   }
+  sessionRef.child(sessionId).push({
+    "guestId": guestId,
+    "voteVal": voteVal,
+    "timeStep": timeStep
+  });
 
 //Notification of votes for testing purposes
   // ref.on("child_changed", function(snapshot) {
   //   var newVote = snapshot.val();
   //   console.log("User# "+newVote.guestId+ " just voted "  + newVote.voteVal);
   // });
-
-
 };
 
-exports.getFromDB = function(sessionId){
+exports.getFromDb = function(sessionId) {
 //Intended for post-session data analysis by host
 //Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
 
@@ -67,10 +52,8 @@ exports.getFromDB = function(sessionId){
     sessionResults.push(snapshot.key());
   });
 
- return sessionResults;
+  return sessionResults;
 };
-
-
 
 // --------------------------Current Sessions-------------------------------- //
 // { // Holds all concurrent sessions
