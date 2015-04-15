@@ -1,3 +1,4 @@
+var chai = require('chai');
 var assert = chai.assert;
 var should = chai.should();
 var expect = chai.expect;
@@ -8,8 +9,7 @@ var expect = chai.expect;
 var Firebase = require("firebase");
 var request = require("request");
 
-describe("Firebase data storage", function() {
-
+xdescribe("Firebase data storage", function() {
   beforeEach(function() {
     var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
     var archiveVote1 = {sessionId: {
@@ -22,7 +22,6 @@ describe("Firebase data storage", function() {
           voteVal: 1,
           timeStamp: 34567
          }};
-
   });
 
   //var mongoServer = new mongodb.Server("127.0.0.1", 27017, {}); //replace with Node server
@@ -30,7 +29,6 @@ describe("Firebase data storage", function() {
   var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
   it("Should store votes in Firebase", function(done) {
-
     var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
     var archiveVote1 = {sessionId: {
           guestId: "randonGuy",
@@ -76,7 +74,6 @@ describe("Firebase data storage", function() {
   });
 
   it("Should retrieve votes from Firebase", function(done) {
-
     mongoClient.open(function(err, p_client) {
       /* TODO edit this variable to match the name of
        * the collection you're using: */
@@ -106,7 +103,5 @@ describe("Firebase data storage", function() {
         });
       });
     });
-
-
   });
 });

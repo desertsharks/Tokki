@@ -1,10 +1,10 @@
 // Socket helper functions
-app.factory('GuestServices', function($http) {
+angular.module('greenfield')
+  .factory('GuestServices', function($http) {
 
   var session = {
-    id: "",
-    // TODO: Establish url
-    url: "localhost:4000/guest/",
+    id: '',
+    url: '/guest',
     socket: null
   };
 
@@ -13,7 +13,7 @@ app.factory('GuestServices', function($http) {
     session.id = sessionId;
     return $http({
       method: 'GET',
-      url: '/guest/' + sessionId
+      url: session.url + '/' + sessionId
     })
     .then(function(resp) {
       return resp.data;
@@ -22,18 +22,12 @@ app.factory('GuestServices', function($http) {
 
   // Initiates socket connection
   // Listens for socket events
-  var listen = function() {
-    session.socket = io.connect(url + session.id);
+  var listen = function(cb) {
+    session.socket = io.connect(window.location.host + '/' + session.id);
     session.socket.on('connect', function() {
-
-      // Listens for invalid room
-      session.socket.on('invalid', function(data) {
-        // TODO: Display a ui warning
-      });
-
       // Listens for end of session
       session.socket.on('end', function(data) {
-        // TODO: Activate end of session view
+        cb();
       });
     });
   };

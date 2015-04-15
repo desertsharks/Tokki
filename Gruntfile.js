@@ -1,20 +1,18 @@
 module.exports = function(grunt) {
 
-  // testing plugins
+  // Testing plugins
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-test');
 
-  //utility plugins
+  // Utility plugins
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-notify');
 
-
-  // grunt setup
+  // Grunt setup
   grunt.initConfig({
-
     jshint: {
-      files: ['public/**/*.js', 'server/**/*']
+      files: ['public/client/**/*.js', 'server/**/*']
     },
 
     mochaTest: {
@@ -29,17 +27,15 @@ module.exports = function(grunt) {
       }
     },
 
+    //'grunt watch' runs the watch function
     watch: {
       jshint: {
-        files: ['public/**/*.js', 'server/**/*'],
+        files: ['public/client/**/*.js', 'server/**/*'],
         tasks: ['jshint', 'mochaTest']
       }
     }
   });
 
-  //'grunt watch' runs the watch function
-
   grunt.registerTask('test', ['jshint', 'mochaTest']);
   grunt.registerTask('serve', ['jshint', 'mochaTest', 'nodemon']);
-
 };

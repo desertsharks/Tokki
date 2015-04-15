@@ -8,13 +8,16 @@ exports.SessionsCollection = Backbone.Collection.extend({
   model: SessionModel,
 
   // Adds a new session and returns its unique identifier
-  addNewSession: function() {
-    var session = new SessionModel();
+  addNewSession: function(params) {
+    params = params || {};
+    params.collection = this;
+    var session = new SessionModel(params);
     this.add(session);
     return session.cid;
   },
   removeSession: function(sessionId) {
-    if(this.remove(sessionId)) {
+    var session = this.remove(sessionId);
+    if(session && !session.get('debug')) {
       dbUtils.closeSessionInDb(sessionId);
     }
   },
@@ -40,7 +43,13 @@ exports.SessionsCollection = Backbone.Collection.extend({
     if (this.get(sessionId)) {
       return this.get(sessionId).getHistoricalAverage();
     }
+  },
+  getUserCount: function(sessionId) {
+    if (this.get(sessionId)) {
+      return this.get(sessionId).getUserCount();
+    }
   }
 });
 
+// Exports instance for server use and constructor for testing
 exports.sessions = new exports.SessionsCollection();
