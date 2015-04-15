@@ -1,3 +1,4 @@
+var chai = require('chai');
 var assert = chai.assert;
 var should = chai.should();
 var expect = chai.expect;
@@ -8,7 +9,7 @@ var expect = chai.expect;
 var Firebase = require("firebase");
 var request = require("request");
 
-describe("Firebase data storage", function() {
+xdescribe("Firebase data storage", function() {
 
   beforeEach(function() {
     var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');

@@ -9,7 +9,7 @@ exports.SessionsCollection = Backbone.Collection.extend({
 
   // Adds a new session and returns its unique identifier
   addNewSession: function() {
-    var session = new SessionModel();
+    var session = new SessionModel({collection: this});
     this.add(session);
     return session.cid;
   },
