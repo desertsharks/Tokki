@@ -27,7 +27,10 @@ exports.SessionModel = Backbone.Model.extend({
 
       stepCount: 0,
       interval: 2000,
-      maxAge: 6*60*60*1000 // maxAge is 6 hours
+      maxAge: 6*60*60*1000, // maxAge is 6 hours
+
+      // If debugging, do not forward to database
+      debug: false
     };
   },
 
@@ -56,7 +59,9 @@ exports.SessionModel = Backbone.Model.extend({
       this.set('voteCount', this.get('voteCount') + (voteVal !== null) - (vote.get('voteVal') !== null));
       vote.set('voteVal', voteVal);
 
-      dbUtils.addToDb(this.cid, userId, voteVal, this.get('stepCount'));
+      if (!this.get('debug')) {
+        dbUtils.addToDb(this.cid, userId, voteVal, this.get('stepCount'));
+      }
     }
   },
 
