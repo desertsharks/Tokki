@@ -1,37 +1,53 @@
-var Firebase = require("firebase");
+var Firebase = require('firebase');
+var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
 // TODO: Auth
 
-exports.openSessionInDb =function(sessionId) {
 //Opens a new session when created by the host
-  var dbRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
-  dbRef.child(sessionId).set({
-    "startTime": Date.now(),
-    "endTime": null
-  });
+exports.openSessionInDb =function(sessionId, cb) {
+  cb = cb || function(err) {
+    if (err) {
+      console.error('Failed to open session:', err);
+    }
+  };
+  sessionRef.child(sessionId).set({
+    startTime: Firebase.ServerValue.TIMESTAMP,
+    endTime: null
+  }, cb);
 };
 
-exports.closeSessionInDb = function(sessionId) {
 //Adds an endTime property to sessionId object
-  var dbRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
-  dbRef.child(sessionId).update({
-    "endTime": Date.now()
+exports.closeSessionInDb = function(sessionId) {
+  sessionRef.child(sessionId).update({
+    endTime: Firebase.ServerValue.TIMESTAMP
   });
 };
 
-exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
 //Adds Votes into the database for an existing session
-  var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
-
+exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
+  var addEntry = function() {
+    sessionRef.child(sessionId).push({
+      guestId: guestId,
+      voteVal: voteVal,
+      timeStep: timeStep
+    });
+  };
   //Look up the session ID
   //If it exists, push a new {userID, timeStamp, voteVal} into that session
-  if(!sessionRef.child(sessionId).val()) {
-    exports.openSessionInDb(sessionId);
-  }
-  sessionRef.child(sessionId).push({
-    "guestId": guestId,
-    "voteVal": voteVal,
-    "timeStep": timeStep
+  sessionRef.once('value', function(snapshot) {
+    if (snapshot.exists()) {
+      addEntry();
+    } else {
+      exports.openSessionInDb(sessionId, function(err) {
+        if (err) {
+          console.error('Failed to open session:', err);
+        } else {
+          addEntry();
+        }
+      });
+    }
+  }, function(err) {
+    console.error('Failed to addToDb:', err);
   });
 
 //Notification of votes for testing purposes
@@ -46,9 +62,8 @@ exports.getFromDb = function(sessionId) {
 //Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
 
   var sessionResults = [];
-  var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
-  sessionRef.orderByChild("session").equalTo(sessionId).on("child_added", function(snapshot) {
+  sessionRef.orderByChild('session').equalTo(sessionId).on('child_added', function(snapshot) {
     sessionResults.push(snapshot.key());
   });
 
