@@ -9,7 +9,7 @@ app.factory('HostServices', function($http) {
 
   // Sends a request for a new session.
   // Receives the sessionID of that session.
-  var startSession = function() {
+  var startSession = function(callback) {
     return $http({
       method: 'POST',
       url: session.url
@@ -22,10 +22,10 @@ app.factory('HostServices', function($http) {
   // Initiates socket connection
   // Listens for socket events
   var listen = function() {
-    var socket = io.connect(session.url + session.id);
-    socket.on('connect', function() {
+    session.socket = io.connect(session.url + session.id);
+    session.socket.on('connect', function() {
       // Listens for stats
-      socket.on('stats', function(data) {
+      session.socket.on('stats', function(data) {
         // TODO: Display Stats
       });
     });
@@ -34,7 +34,7 @@ app.factory('HostServices', function($http) {
   // emit end to end a session
   var endSession = function() {
     if(session.socket){
-      socket.emit('end');
+      session.socket.emit('end');
     }
   };
 
