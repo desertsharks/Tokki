@@ -79,5 +79,9 @@ exports.SessionModel = Backbone.Model.extend({
 
   getHistoricalAverage: function() {
     return this.get('cumSumVoteVals') / this.get('sumVoteCounts');
+  },
+
+  getUserCount: function() {
+    return this.get('votes').length;
   }
 });

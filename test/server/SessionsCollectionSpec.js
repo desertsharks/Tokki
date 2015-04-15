@@ -30,17 +30,18 @@ describe('SessionsCollection', function() {
       sessions.get(sessionId)._update();
       expect(sessions.getHistoricalAverage(sessionId)).to.equal(2);
     });
-    it('will have no effect if a user is added twice', function() {
+    it('has no effect if a user is added twice', function() {
       sessions.changeVote(sessionId, userId, 2);
       sessions.addUser(sessionId, userId);
       expect(sessions.get(sessionId).get('votes').get(userId).get('voteVal')).to.equal(2);
+      expect(sessions.getUserCount(sessionId)).to.equal(1);
     });
-    it('will create a user if the vote of a non-existent user is changed', function() {
+    it('creates a user if the vote of a non-existent user is changed', function() {
       userId = 'aBP9S-wzDhqJFBwfAAAC';
       sessions.changeVote(sessionId, userId, 2);
-      expect(sessions.get(sessionId).get('votes').get(userId).get('voteVal')).to.equal(2);
+      expect(sessions.getUserCount(sessionId)).to.equal(2);
     });
-    it('will expire after its maxAge has been exceeded', function() {
+    it('expires after its maxAge has been exceeded', function() {
       var interval = sessions.get(sessionId).get('interval');
       var maxAge = sessions.get(sessionId).get('maxAge');
       for (var i=0; i<=maxAge/interval; i++) {

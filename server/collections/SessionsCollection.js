@@ -40,7 +40,13 @@ exports.SessionsCollection = Backbone.Collection.extend({
     if (this.get(sessionId)) {
       return this.get(sessionId).getHistoricalAverage();
     }
+  },
+  getUserCount: function(sessionId) {
+    if (this.get(sessionId)) {
+      return this.get(sessionId).getUserCount();
+    }
   }
 });
 
+// Exports instance for server use and constructor for testing
 exports.sessions = new exports.SessionsCollection();
