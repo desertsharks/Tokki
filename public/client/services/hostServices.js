@@ -23,7 +23,7 @@ angular.module('greenfield')
   // Initiates socket connection
   // Listens for socket events
   var listen = function(cb) {
-    console.log(window.location.host)
+    console.log(window.location.host);
     session.socket = io.connect(window.location.host + '/' + session.id);
     session.socket.on('connect', function() {
       // Listens for stats
