@@ -1,10 +1,9 @@
 var io = require('../../server').io;
+var sessions = require('../collections/SessionsCollection').sessions;
 
 exports.init = function(sessionId, calculateStats) {
   // Wrapped in an iife to preserve sessionId references
   (function(sessionId) {
-    // TODO: Write start to db
-
     var sessionGuestIo = io.of(sessionId);
     sessionGuestIo.on('connect', function(socket) {
       socket.emit('valid');
@@ -17,19 +16,12 @@ exports.init = function(sessionId, calculateStats) {
     });
 
     // TODO: Add auth for this room
-    var hostIds = [];
     var sessionHostIo = io.of('host/'+sessionId);
     sessionHostIo.on('connect', function(socket) {
-      hostIds.push(socket.id);
       socket.on('end', function() {
         sessionGuestIo.emit('end');
-        // TODO: Write close to db
-      });
-      socket.on('disconnect', function() {
-        var index = hostIds.indexOf(socket.id);
-        if (index > -1) {
-          hostIds.splice(index, 1);
-        }
+        socket.broadcast.emit('end');
+        sessions.removeSession(sessionId);
       });
 
       // Calls calculateStats every interval with the proper sessionId
