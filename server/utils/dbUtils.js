@@ -1,4 +1,4 @@
-var Firebase = require("firebase");
+var Firebase = require('firebase');
 var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
 // TODO: Auth
@@ -11,15 +11,15 @@ exports.openSessionInDb =function(sessionId, cb) {
     }
   };
   sessionRef.child(sessionId).set({
-    "startTime": Firebase.ServerValue.TIMESTAMP,
-    "endTime": null
+    startTime: Firebase.ServerValue.TIMESTAMP,
+    endTime: null
   }, cb);
 };
 
 //Adds an endTime property to sessionId object
 exports.closeSessionInDb = function(sessionId) {
   sessionRef.child(sessionId).update({
-    "endTime": Firebase.ServerValue.TIMESTAMP
+    endTime: Firebase.ServerValue.TIMESTAMP
   });
 };
 
@@ -27,9 +27,9 @@ exports.closeSessionInDb = function(sessionId) {
 exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
   var addEntry = function() {
     sessionRef.child(sessionId).push({
-      "guestId": guestId,
-      "voteVal": voteVal,
-      "timeStep": timeStep
+      guestId: guestId,
+      voteVal: voteVal,
+      timeStep: timeStep
     });
   };
   //Look up the session ID
@@ -63,7 +63,7 @@ exports.getFromDb = function(sessionId) {
 
   var sessionResults = [];
 
-  sessionRef.orderByChild("session").equalTo(sessionId).on("child_added", function(snapshot) {
+  sessionRef.orderByChild('session').equalTo(sessionId).on('child_added', function(snapshot) {
     sessionResults.push(snapshot.key());
   });
 
