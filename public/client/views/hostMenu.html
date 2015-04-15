@@ -1,7 +1,8 @@
 <!-- This is the host"s main page. New sessions can be started here, historic sessions can be viewed here. -->
-
-  <button id='newSession' ng-click="startSession()">New Session</button>
+  <!-- Added an href to the button to route it to the session screen.  -->
+  <button id="newSession"ng-click="startSession()"><a href="#/hostSession">New Session</a></button>
   <br>
-  <button id='sessionHistory' ng-click="???">View History</button>
+  <!-- This button is not important for MVP -->
+  <button id="sessionHistory" ng-click="???"><a href="???">View History</a></button>
   <br>
-  <button id='logout' ng-click="???">Log Out</button>
+  <button id="logout" ng-click="???"><a href="#/home">Log Out</a></button>
