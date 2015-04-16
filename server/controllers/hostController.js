@@ -15,8 +15,9 @@ exports.calculateStats = function(sessionId, cb) {
 // Begins listening to a session
 exports.registerSession = function(req, res) {
   var sessionId = sessions.addNewSession();
-  res.send(sessionId); // Client will redirect to /#/host/sessionId
-  socketUtils.init(sessionId);
+  socketUtils.init(sessionId, function() {
+    res.send(sessionId); // Client will redirect to /#/host/sessionId
+  });
 };
 
 exports.login = function(req, res) {};

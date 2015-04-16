@@ -1,5 +1,6 @@
 angular.module('greenfield')
-  .controller('LoginController', ['$scope', 'LoginServices', function($scope, LoginServices) {
+  .controller('LoginController', ['$scope', function($scope) {
+// TODO: Add loginServices back in
 
   $scope.data = {};
 

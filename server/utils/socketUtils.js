@@ -1,8 +1,13 @@
-var io = require('../../server').io;
 var sessions = require('../collections/SessionsCollection').sessions;
 var hostController = require('../controllers/hostController');
+var io;
 
-exports.init = function(sessionId) {
+exports.init = function(sessionId, done) {
+  // Must require io after server is finished loading
+  if (!io) {
+    io = require('../../server').io;
+  }
+
   var sessionGuestIo = io.of(sessionId);
   sessionGuestIo.on('connect', function(socket) {
     socket.on('vote', function(voteVal) {
@@ -30,4 +35,6 @@ exports.init = function(sessionId) {
       clearInterval(intervalObject);
     });
   });
+
+  done();
 };
