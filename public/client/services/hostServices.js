@@ -10,6 +10,7 @@ angular.module('greenfield')
 
   // Sends a request for a new session.
   // Receives the sessionID of that session.
+
   var startSession = function(cb) {
     return $http({
       method: 'POST',

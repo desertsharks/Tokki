@@ -7,6 +7,7 @@ angular.module('greenfield')
   $scope.time = 'time';
   // Opens a new session
   $scope.startSession = function() {
+
     HostServices.startSession( function(data) {
       $scope.sessionId = data;
       HostServices.listen( function(data) {
@@ -17,8 +18,10 @@ angular.module('greenfield')
 
   // Ends a session
   $scope.endSession = function() {
+    console.log("Session ended");
     HostServices.endSession();
   };
+
 
   $scope.startSession();
 
