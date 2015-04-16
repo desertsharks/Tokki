@@ -11,7 +11,7 @@ angular.module('greenfield')
     .state('home', {
       url: '/home',
       templateUrl: './views/homeView.html',
-      controller: 'HostController'
+      controller: 'LoginController'
     })
     // Routes to the guest session view
     .state('guestSession', {
@@ -23,7 +23,7 @@ angular.module('greenfield')
     .state('hostMenu', {
       url: '/hostMenu',
       templateUrl: './views/hostMenu.html',
-      controller: 'HostController'
+      controller: 'LoginController'
     })
     // Routes to the hosts current session
     .state('hostSession', {

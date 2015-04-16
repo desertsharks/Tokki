@@ -10,26 +10,32 @@ angular.module('greenfield')
 
   // Sends a request for a new session.
   // Receives the sessionID of that session.
-  var startSession = function() {
+  var startSession = function(cb) {
     return $http({
       method: 'POST',
-      url: session.url
+      url: session.url + '/new'
     })
     .then(function(resp) {
       session.id = resp.data;
+      cb(resp.data);
     });
   };
 
   // Initiates socket connection
   // Listens for socket events
   var listen = function(cb) {
-    console.log(window.location.host);
-    session.socket = io.connect(window.location.host + '/' + session.id);
+    session.socket = io.connect(window.location.host + '/host/' + session.id);
+    console.log(window.location.host + '/host/' + session.id);
+
     session.socket.on('connect', function() {
       // Listens for stats
       session.socket.on('stats', function(data) {
         cb(data);
       });
+    });
+
+    session.socket.on('error', function(err) {
+      console.error(err);
     });
   };
 

@@ -9,14 +9,14 @@ angular.module('greenfield')
   };
 
   // Route to the guest view and listen on the new sessionId
-  var getSession = function(sessionId) {
+  var getSession = function(sessionId, cb) {
     session.id = sessionId;
     return $http({
       method: 'GET',
       url: session.url + '/' + sessionId
     })
     .then(function(resp) {
-      return resp.data;
+      cb(sessionId, resp.data);
     });
   };
 
@@ -30,11 +30,16 @@ angular.module('greenfield')
         cb();
       });
     });
+
+    session.socket.on('error', function(err) {
+      console.error(err);
+    });
   };
 
   // Sends vote
   var vote = function(voteData) {
     if(session.socket){
+      console.log('vote:' + voteData);
       session.socket.emit(voteData);
     }
   };
