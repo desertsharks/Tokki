@@ -3,7 +3,7 @@ var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desert
 
 // TODO: Auth
 
-//Opens a new session when created by the host
+// Opens a new session when created by the host
 exports.openSessionInDb =function(sessionId, cb) {
   cb = cb || function(err) {
     if (err) {
@@ -16,14 +16,14 @@ exports.openSessionInDb =function(sessionId, cb) {
   }, cb);
 };
 
-//Adds an endTime property to sessionId object
+// Adds an endTime property to sessionId object
 exports.closeSessionInDb = function(sessionId) {
   sessionRef.child(sessionId).update({
     endTime: Firebase.ServerValue.TIMESTAMP
   });
 };
 
-//Adds Votes into the database for an existing session
+// Adds Votes into the database for an existing session
 exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
   var addEntry = function() {
     sessionRef.child(sessionId).push({
@@ -32,8 +32,8 @@ exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
       timeStep: timeStep
     });
   };
-  //Look up the session ID
-  //If it exists, push a new {userID, timeStamp, voteVal} into that session
+  // Look up the session ID
+  // If it exists, push a new {userID, timeStamp, voteVal} into that session
   sessionRef.once('value', function(snapshot) {
     if (snapshot.exists()) {
       addEntry();
@@ -50,7 +50,7 @@ exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
     console.error('Failed to addToDb:', err);
   });
 
-//Notification of votes for testing purposes
+// Notification of votes for testing purposes
   // ref.on("child_changed", function(snapshot) {
   //   var newVote = snapshot.val();
   //   console.log("User# "+newVote.guestId+ " just voted "  + newVote.voteVal);
@@ -58,8 +58,8 @@ exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
 };
 
 exports.getFromDb = function(sessionId) {
-//Intended for post-session data analysis by host
-//Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
+// Intended for post-session data analysis by host
+// Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
 
   var sessionResults = [];
 

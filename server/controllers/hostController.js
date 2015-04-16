@@ -11,6 +11,11 @@ exports.calculateStats = function(sessionId, cb) {
   });
 };
 
+exports.logout = function(req, res) {
+  req.logout();
+  res.status(204).end();
+};
+
 // Return a sessionId
 // Begins listening to a session
 exports.registerSession = function(req, res) {
@@ -19,7 +24,7 @@ exports.registerSession = function(req, res) {
   socketUtils.init(sessionId);
 };
 
-exports.login = function(req, res) {};
+exports.retrieveSessions = function(req, res) {};
 
 exports.redirect = function(req, res) {
   res.redirect('/#/host/' + (req.params.sessionId || ''));
