@@ -17,8 +17,12 @@ exports.SessionsCollection = Backbone.Collection.extend({
   },
   removeSession: function(sessionId) {
     var session = this.remove(sessionId);
-    if(session && !session.get('debug')) {
-      dbUtils.closeSessionInDb(sessionId);
+    if(session) {
+      dbUtils.closeSessionInDb({
+        provider: session.get('provider'),
+        hostId: session.get('hostId'),
+        sessionId: sessionId
+      });
     }
   },
 

@@ -9,7 +9,11 @@ exports.SessionModel = Backbone.Model.extend({
   initialize: function() {
     this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
 
-    dbUtils.openSessionInDb(this.cid);
+    dbUtils.openSessionInDb({
+      provider: this.get('provider'),
+      hostId: this.get('hostId'),
+      sessionId: this.cid
+    });
   },
 
   // defaults is a function so VotesCollection is reinstantiated every time
@@ -29,8 +33,9 @@ exports.SessionModel = Backbone.Model.extend({
       interval: 2000,
       maxAge: 6*60*60*1000, // maxAge is 6 hours
 
-      // If debugging, do not forward to database
-      debug: false
+      // Used in forwarding changes to firebase
+      provider: null,
+      hostId: null
     };
   },
 
@@ -59,9 +64,15 @@ exports.SessionModel = Backbone.Model.extend({
       this.set('voteCount', this.get('voteCount') + (voteVal !== null) - (vote.get('voteVal') !== null));
       vote.set('voteVal', voteVal);
 
-      if (!this.get('debug')) {
-        dbUtils.addToDb(this.cid, userId, voteVal, this.get('stepCount'));
-      }
+      dbUtils.addToDb({
+          provider: this.get('provider'),
+          hostId: this.get('hostId'),
+          sessionId: this.cid
+        }, {
+          guestId: userId,
+          voteVal: voteVal,
+          timeStep: this.get('stepCount')
+      });
     }
   },
 
