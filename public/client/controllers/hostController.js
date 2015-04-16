@@ -5,6 +5,7 @@ angular.module('greenfield')
 
   // Opens a new session
   $scope.startSession = function() {
+    console.log("The session has been started");
     HostServices.startSession()
       .then(HostServices.listen.bind(null, function(data){
         console.log(data);
@@ -13,7 +14,7 @@ angular.module('greenfield')
 
   // Ends a session
   $scope.endSession = function() {
+    console.log("Session ended");
     HostServices.endSession();
   };
-
 }]);

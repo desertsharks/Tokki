@@ -11,6 +11,7 @@ angular.module('greenfield')
   // Sends a request for a new session.
   // Receives the sessionID of that session.
   var startSession = function() {
+    console.log("SESSION URL ", session.url);
     return $http({
       method: 'POST',
       url: session.url

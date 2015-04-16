@@ -13,6 +13,10 @@ angular.module('greenfield')
 
   // Submit a vote
   $scope.vote = function() {
+    // The log here does two things
+    // 1. Makes sure the method is being called.
+    // 2. Checks to see what a vote is. This is currently undefined
+    console.log("Vote info: ", vote);
     GuestServices(vote);
   };
 
