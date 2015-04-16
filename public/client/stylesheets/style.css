@@ -1,15 +1,43 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html {
+  background-color: #355065;
 }
+body {
+  background-color: white;
+  font: 32px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #355065;
+  margin: 25px 0px; 
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+}
+
 
 a {
   color: #00B7FF;
 }
 
-#login {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+title {
+    text-align: center;
+    border-bottom: 2px solid black;
 }
+
+.hostMenuButtons {
+  font: 24px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 300px;
+  height: 60px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #c9d5cf;
+  border: 2px solid #355065;
+  margin-top: 10px;
+  color: #355065;
+}
+
+#logout {
+  margin-left: -10px;
+}
+
 
 .ratings {
   width: auto;
