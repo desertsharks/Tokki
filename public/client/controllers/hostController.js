@@ -22,6 +22,19 @@ angular.module('greenfield')
     HostServices.endSession();
   };
 
+  // Need to pull data from DB for analysis
+  $scope.sessionHistory = function(){
+    console.log("Accessing session data");
+    AnalysisServies.sessionHistory();
+  };
+
+  // Presents analysis for a specific session
+  $scope.sessionAnalysis = function(){
+    console.log("Session Analysis");
+    AnalysisServies.sessionAnalysis();
+  }
+
+
 
   $scope.startSession();
 
