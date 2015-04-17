@@ -6,3 +6,13 @@
 
 <!-- This is where historic sessions can be appended -->
 <div>Sessions Appended Here</div>
+<!--- Data in format of JSON objects
+  provider:
+    host:
+      sessionId: {
+        voteId: voteVal
+        ..
+        }
+        : startTime
+  -->
+<a href="#/hostMenu" id="sessionAnalysis" ng-click="sessionAnalysis()">{{session.id}}{{session.startTime}}{{}}</a>
