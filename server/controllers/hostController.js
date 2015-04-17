@@ -19,13 +19,22 @@ exports.logout = function(req, res) {
 // Return a sessionId
 // Begins listening to a session
 exports.registerSession = function(req, res) {
-  var sessionId = sessions.addNewSession();
-  socketUtils.init(sessionId, function() {
-    res.send(sessionId); // Client will redirect to /#/host/sessionId
+  var hostInfo = req.session.passport.user;
+  var sessionId = sessions.addNewSession({
+    provider: hostInfo.provider,
+    hostId: hostInfo.hostId,
+    cb: function() {
+      socketUtils.init(sessionId, function() {
+        res.send(sessionId); // Client will redirect to /#/host/sessionId
+      });
+    }
   });
 };
 
-exports.retrieveSessions = function(req, res) {};
+exports.retrieveSessions = function(req, res) {
+  var hostInfo = req.session.passport.user;
+  // TODO: Complete this
+};
 
 exports.redirect = function(req, res) {
   res.redirect('/#/host/' + (req.params.sessionId || ''));

@@ -1,7 +1,10 @@
 var hostController = require('../controllers/hostController');
 
 module.exports = function(app, passport) {
-  app.get('/login/facebook', passport.authenticate('facebook'));
+  app.get('/auth/facebook', passport.authenticate('facebook'));
+  app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/#/host/login' }), function(req, res) {
+    res.redirect('/#/hostMenu');
+  });
   app.post('/logout', hostController.logout);
   app.post('/new', isLoggedIn, hostController.registerSession);
   app.get('/old', isLoggedIn, hostController.retrieveSessions);
