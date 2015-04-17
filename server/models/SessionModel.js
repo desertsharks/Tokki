@@ -8,7 +8,6 @@ var dbUtils = require('../utils/dbUtils');
 exports.SessionModel = Backbone.Model.extend({
   initialize: function() {
     this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
-
     dbUtils.openSessionInDb({
         provider: this.get('provider'),
         hostId: this.get('hostId'),
