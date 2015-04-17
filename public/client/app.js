@@ -30,5 +30,17 @@ angular.module('greenfield')
       url: '/hostSession',
       templateUrl: './views/hostSession.html',
       controller: 'HostController'
-    });
+    })
+    //Route
+    .state('hostHistoryView', {
+      url: '/hostHistoryView',
+      templateUrl: './views/hostHistoryView.html',
+      controller: 'HostController'
+    })
+    .state('hostAnalysisView', {
+      url: '/hostAnalysisView',
+      templateUrl: './views/hostAnalysisView.html',
+      controller: 'HostController'
+    })
+
 });
