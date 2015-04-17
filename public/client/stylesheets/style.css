@@ -16,9 +16,13 @@ body {
   border-radius: 10px;
 }
 
-title {
+#title {
   text-align: center;
-  border-bottom: 2px solid black;
+}
+
+#titleLink {
+  text-decoration: none;
+  color: #355065;
 }
 
 
@@ -66,10 +70,16 @@ h3 {
   border: 2px solid #c9d5cf;
   border-radius: 5px;
   cursor: pointer;
+  color: white;
 }
 
 .selected {
   background-color: #2e495e;
+}
+
+#ratingText {
+  color: #c9d5cf;
+  padding-bottom: 15px;
 }
 
 /********************************/
