@@ -15,9 +15,7 @@ angular.module('greenfield')
 
   // Submit a vote
   $scope.vote = function() {
-
     GuestServices.vote(Math.floor(Math.random() * 5.9));
-    
   };
 
   // This will be given before this page loads.

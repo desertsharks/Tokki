@@ -34,6 +34,24 @@ title {
   color: #355065;
 }
 
+#hostSession {
+  color: #355065;
+  background-color: #c9d5cf;
+  text-decoration: none;
+  border: 2px solid #355065;
+  border-radius: 5px;
+  padding: 5px 5px;
+}
+
+#login {
+  width: 300px;
+  text-align: center;
+  color: grey;
+  font-size: 24px;
+  border: none;
+  border-bottom: 2px solid #355065;
+}
+
 #logout {
   margin-left: -10px;
 }
