@@ -20,8 +20,9 @@ exports.logout = function(req, res) {
 // Begins listening to a session
 exports.registerSession = function(req, res) {
   var sessionId = sessions.addNewSession();
-  res.send(sessionId); // Client will redirect to /#/host/sessionId
-  socketUtils.init(sessionId);
+  socketUtils.init(sessionId, function() {
+    res.send(sessionId); // Client will redirect to /#/host/sessionId
+  });
 };
 
 exports.retrieveSessions = function(req, res) {};
