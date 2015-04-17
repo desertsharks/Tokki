@@ -10,10 +10,11 @@ exports.SessionModel = Backbone.Model.extend({
     this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
 
     dbUtils.openSessionInDb({
-      provider: this.get('provider'),
-      hostId: this.get('hostId'),
-      sessionId: this.cid
-    });
+        provider: this.get('provider'),
+        hostId: this.get('hostId'),
+        sessionId: this.cid
+      }, this.get('cb')
+    );
   },
 
   // defaults is a function so VotesCollection is reinstantiated every time
