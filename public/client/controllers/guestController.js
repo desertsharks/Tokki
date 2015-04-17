@@ -1,5 +1,5 @@
 angular.module('greenfield')
-  .controller('GuestController', ['$scope', 'GuestServices', function($scope, GuestServices) {
+  .controller('GuestController', ['$scope', '$state', 'GuestServices', function($scope, $state, GuestServices) {
 
   // Holds rating values
   // Holds whether value is selected (for the gui)
@@ -17,8 +17,10 @@ angular.module('greenfield')
   $scope.init = function(sessionId) {
     GuestServices.getSession( sessionId, function(sessionId, data) {
       console.log('listening...');
-      GuestServices.listen( function(data) {
-        console.log(data);
+      // Runs on session end
+      GuestServices.listen( function() {
+        console.log('session has ended');
+        $state.go('home', {}, {reload: true});
       });
     });
   };
