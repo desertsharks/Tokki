@@ -1,15 +1,64 @@
+html {
+  background-color: #355065;
+}
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: white;
+  font: 32px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #355065;
+  margin: 25px 0px;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.selected {
+  background-color: blue;
 }
 
 a {
   color: #00B7FF;
 }
 
-#login {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+title {
+    text-align: center;
+    border-bottom: 2px solid black;
 }
+
+.hostMenuButtons {
+  font: 24px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 300px;
+  height: 60px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #c9d5cf;
+  border: 2px solid #355065;
+  margin-top: 10px;
+  color: #355065;
+}
+
+#hostSession {
+  color: #355065;
+  background-color: #c9d5cf;
+  text-decoration: none;
+  border: 2px solid #355065;
+  border-radius: 5px;
+  padding: 5px 5px;
+}
+
+#login {
+  width: 300px;
+  text-align: center;
+  color: grey;
+  font-size: 24px;
+  border: none;
+  border-bottom: 2px solid #355065;
+}
+
+#logout {
+  margin-left: -10px;
+}
+
 
 .ratings {
   width: auto;

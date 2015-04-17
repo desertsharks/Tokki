@@ -1,7 +1,8 @@
 angular.module('greenfield')
-  .controller('LoginController', ['$scope', 'LoginServices', function($scope, LoginServices) {
+  .controller('LoginController', ['$scope', '$state', function($scope, $state) {
+// TODO: Add loginServices back in
 
-  $scope.data = {};
+  $scope.sessionId = "";
 
   $scope.init = function() {
 
@@ -13,6 +14,11 @@ angular.module('greenfield')
 
   $scope.logout = function() {
 
+  };
+
+  $scope.newGuest = function() {
+    // TODO: Pass in session code from the home view
+    $state.go('guestSession', {}, {reload: true});
   };
 
 }]);
