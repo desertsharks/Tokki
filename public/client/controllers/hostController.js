@@ -9,6 +9,7 @@ angular.module('greenfield')
   $scope.startSession = function() {
 
     HostServices.startSession( function(data) {
+      console.log(data);
       $scope.sessionId = data;
       HostServices.listen( function(data) {
         console.log(data);

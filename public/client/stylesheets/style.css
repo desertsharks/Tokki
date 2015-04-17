@@ -47,12 +47,12 @@ title {
 }
 
 #login {
+  border: none;
+  border-bottom: 2px solid #355065;
   width: 300px;
   text-align: center;
   color: grey;
   font-size: 24px;
-  border: none;
-  border-bottom: 2px solid #355065;
 }
 
 #logout {
