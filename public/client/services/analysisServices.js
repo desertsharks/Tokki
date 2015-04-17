@@ -16,11 +16,12 @@ angular.module('greenfield')
   var sessionHistory = function(cb) {
     return $http({
       method: 'GET',
-      //in the db, looking at
-      url: session.url + '/'
+      //Call to Server, who has DB methods
+      url: session.url + '/' + sesssion.hostID
     })
     .then(function(resp) {
-      // Historical data pulled from DB
+      console.log("SessionHistory called");
+      // Historical data pulled from DB?
 
       session.data = resp.data;
       cb(resp.data);
@@ -33,10 +34,10 @@ angular.module('greenfield')
   var sessionAnalysis = function(cb){
     return $http({
       method: 'GET',
-      url: session.url + '/' + session.id
+      url: '#/hostAnalysisView'
     })
     .then(function(resp){
-
+      console.log("SessionAnalysis called");
       session.data = resp.data;
       cb(resp.data);
     })
