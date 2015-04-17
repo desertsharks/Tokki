@@ -5,7 +5,7 @@ angular.module('greenfield')
   $scope.data = {};
 
   $scope.init = function() {
-
+    
   };
 
   $scope.login = function() {
