@@ -7,12 +7,13 @@ angular.module('greenfield')
     url: '/host',
     //provider: '', //where can we get this from GET
     socket: null
+    data: data
   };
 
   // Sends a request of all sessions from a host
   // Receives the session IDs, start times
-
-  var allSessionsHistory = function(cb) {
+  // Expected from hostHistoryView
+  var sessionHistory = function(cb) {
     return $http({
       method: 'GET',
       //in the db, looking at
@@ -21,22 +22,22 @@ angular.module('greenfield')
     .then(function(resp) {
       // Historical data pulled from DB
 
-      session.id = resp.data;
+      session.data = resp.data;
       cb(resp.data);
     });
   };
 
   //Sends a request of a specific session from a host
   //Recieves detailed vote average vs time data
-
-  var singleSessionAnalysis = function(cb){
+  //Expected from hostAnalysisView
+  var sessionAnalysis = function(cb){
     return $http({
       method: 'GET',
       url: session.url + '/' + session.id
     })
     .then(function(resp){
 
-      session.id = resp.data;
+      session.data = resp.data;
       cb(resp.data);
     })
   }
