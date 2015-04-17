@@ -21,7 +21,7 @@ angular.module('greenfield')
     })
     .then(function(resp) {
       console.log("SessionHistory called");
-      // Historical data pulled from DB?
+      // Historical data pulled from server via db
 
       session.data = resp.data;
       cb(resp.data);
@@ -45,7 +45,8 @@ angular.module('greenfield')
 
 
   return {
-    getSessionsHistory: getSessionsHistory
+    sessionsHistory: sessionsHistory,
+    sessionAnalysis: sessionAnalysis
   };
 
 });
