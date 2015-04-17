@@ -1,6 +1,6 @@
 dist/
 node_modules/
-
+config.js
 
 __MACOSX
 .DS_Store

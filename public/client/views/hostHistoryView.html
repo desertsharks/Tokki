@@ -13,6 +13,6 @@
         : startTime
   -->
 <div>
-<a href="#/hostAnalysisView" id="sessionAnalysis" ng-click="sessionAnalysis()" ng-class=""><h2>Sample Session {{session.id}} : {{session.startTime}} : {{session.timeStamp}}</h2></a></div>
+<a href="#/hostAnalysisView" id="sessionAnalysis" ng-click="sessionAnalysis()" ng-class="" data-ng-init="session in sessions | filter: hostId | orderBy: timeStart"><h2>Sample Session {{session.id}} : {{session.startTime}} : {{session.timeStamp}}</h2></a></div>
 
 <button id="logout">Logout</button>
