@@ -1,4 +1,4 @@
 <!-- The view where guests vote -->
 
 <!-- The text in ng-repeat is placeholder text until we get it connected to the controller properly -->
-<div class="ratings" ng-repeat="rating in ratings" ng-class="rating.selected" ng-click="vote(rating)">  {{rating.value}} </div>
+<div class="ratings" ng-repeat="rating in ratings" ng-class="rating.selected" ng-click="vote(rating)">  <h3 id="ratingText">{{rating.value}}</h3></div>
