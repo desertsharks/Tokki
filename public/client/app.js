@@ -35,12 +35,12 @@ angular.module('tokki')
     .state('hostHistoryView', {
       url: '/hostHistoryView',
       templateUrl: './views/hostHistoryView.html',
-      controller: 'HostController'
+      controller: 'AnalysisController'
     })
     .state('hostAnalysisView', {
       url: '/hostAnalysisView',
       templateUrl: './views/hostAnalysisView.html',
-      controller: 'HostController'
+      controller: 'AnalysisController'
     })
 
 });
