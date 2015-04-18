@@ -1,5 +1,5 @@
-[![Stories in Ready](https://badge.waffle.io/desertsharks/greenfield.png?label=ready&title=Ready)](https://waffle.io/desertsharks/greenfield)
-# Greenfield
+[![Stories in Ready](https://badge.waffle.io/desertsharks/tokki.png?label=ready&title=Ready)](https://waffle.io/desertsharks/tokki)
+# Tokki
 
 #Steps to install:
 

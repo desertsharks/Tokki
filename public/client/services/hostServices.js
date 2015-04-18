@@ -1,5 +1,5 @@
 // Socket helper functions
-angular.module('greenfield')
+angular.module('tokki')
   .factory('HostServices', function($http) {
 
   var session = {
