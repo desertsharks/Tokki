@@ -39,7 +39,7 @@ angular.module('tokki')
     });
   };
 
-  // emit end to end a session
+  // Emit end to end a session
   var endSession = function() {
     if(session.socket){
       session.socket.emit('end');
