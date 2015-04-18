@@ -10,9 +10,7 @@ exports.init = function(sessionId, done) {
 
   var sessionGuestIo = io.of(sessionId);
   sessionGuestIo.on('connect', function(socket) {
-    console.log('laaaa');
     socket.on('vote', function(voteVal) {
-      console.log(voteVal);
       sessions.changeVote(sessionId, socket.id, voteVal);
     });
     socket.on('disconnect', function() {

@@ -1,5 +1,5 @@
-angular.module('greenfield')
-  .controller('GuestController', ['$scope', '$state', 'GuestServices', function($scope, $state, GuestServices) {
+angular.module('tokki')
+  .controller('GuestController', ['$scope', '$state', '$stateParams', '$location', 'GuestServices', function($scope, $state, $stateParams, $location, GuestServices) {
 
   // Holds rating values
   // Holds whether value is selected (for the gui)
@@ -16,7 +16,7 @@ angular.module('greenfield')
   // Opens Session
   $scope.init = function(sessionId) {
     GuestServices.getSession( sessionId, function(sessionId, data) {
-      console.log('listening...');
+      console.log('listening to session: ' + $location.path().split('/')[2]);
       // Runs on session end
       GuestServices.listen( function() {
         console.log('session has ended');
@@ -42,6 +42,6 @@ angular.module('greenfield')
   };
 
   // This will be given before this page loads.
-  $scope.init('c1');
-
+  console.log('$location: ' + $location.path().split('/')[2]);
+  $scope.init($location.path().split('/')[2]);
 }]);
