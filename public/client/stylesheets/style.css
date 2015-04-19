@@ -1,0 +1,144 @@
+/********************************/
+/*INDEX STYLES*/
+/********************************/
+
+html {
+  background-color: #355065;
+}
+body {
+  background-color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 30px;
+  color: #355065;
+  margin: 2% 2% 2% 2%;
+  padding: 10%;
+  text-align: center;
+  border-radius: 10px;
+}
+h3 {
+  font-family: "Armata", sans-serif;
+}
+
+#title {
+  text-align: center;
+}
+
+#titleLink {
+  text-decoration: none;
+  color: #355065;
+}
+
+
+/********************************/
+/*GUEST SESSION STYLES*/
+/********************************/
+
+#login {
+  border: none;
+  border-bottom: 2px solid #355065;
+  font-family: "Armata", sans-serif;
+  width: 300px;
+  text-align: center;
+  color: grey;
+  font-size: 24px;
+}
+
+#hostSession {
+  font-family: "Armata", sans-serif;
+  font-size: 24px;
+  width: 300px;
+  height: 60px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #c9d5cf;
+  border: 2px solid #355065;
+  margin-top: 10px;
+  color: #355065;
+  padding: 5px 5px;
+  text-decoration: none;
+}
+
+/********************************/
+/*GUEST SESSION STYLES*/
+/********************************/
+
+.ratings {
+  width: auto;
+  margin: 5px;
+  border: 2px solid #c9d5cf;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.selected {
+  background-color: #2e495e;
+}
+
+#ratingText {
+  color: #c9d5cf;
+}
+
+/********************************/
+/*HOST MENU STYLES*/
+/********************************/
+
+.hostMenuButtons {
+  font-family: "Armata", sans-serif;
+  font-size: 24px;
+  width: 300px;
+  height: 60px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #c9d5cf;
+  border: 2px solid #355065;
+  margin-top: 10px;
+  color: #355065;
+}
+
+/*Reference to host menu button*/
+#hostSession {
+  color: #355065;
+  background-color: #c9d5cf;
+  text-decoration: none;
+  border: 2px solid #355065;
+  border-radius: 5px;
+  padding: 5px 5px;
+}
+
+#logout {
+  margin-left: -10px;
+}
+
+/********************************/
+/*HOST SESSION STYLES*/
+/********************************/
+
+.statTags {
+  font-family: "Armata", sans-serif;
+  margin: 5px 0;
+}
+
+.statTags span {
+  color: #C94040;
+}
+
+#endSession {
+  width: 300px;
+  height: 60px;
+  font-family: "Armata", sans-serif;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #c9d5cf;
+  border: 2px solid #355065;
+  margin-top: 10px;
+  color: #355065;
+  padding: 5px 5px;
+  text-decoration: none;
+}
+
+
