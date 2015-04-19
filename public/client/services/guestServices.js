@@ -8,7 +8,7 @@ angular.module('tokki')
     socket: null
   };
 
-  // Route to the guest view and listen on the new sessionId
+  // Gets the sessionId from the server, and begins listening
   var getSession = function(sessionId, cb) {
     session.id = sessionId;
     return $http({
@@ -20,12 +20,12 @@ angular.module('tokki')
     });
   };
 
-  // Initiates socket connection
-  // Listens for socket events
+  // Initiates socket connection and listens for events
   var listen = function(cb) {
+
     session.socket = io.connect(window.location.host + '/' + session.id);
+
     session.socket.on('connect', function() {
-      // Listens for end of session
       session.socket.on('end', function(data) {
         cb();
       });
@@ -36,10 +36,9 @@ angular.module('tokki')
     });
   };
 
-  // Sends vote
+  // Sends a vote
   var vote = function(voteData) {
     if(session.socket){
-      console.log('vote:' + voteData);
       session.socket.emit('vote', voteData);
     }
   };

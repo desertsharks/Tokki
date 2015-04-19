@@ -1,9 +1,9 @@
-// holds a given user's current vote
+// Holds a user's current vote
 
 var Backbone = require('backbone');
 
 exports.VoteModel = Backbone.Model.extend({
-  // voteVal is initially set to passive state (not registering votes)
+  // Defaults to a passive state (not registering votes)
   defaults: {
     voteVal: null
   }

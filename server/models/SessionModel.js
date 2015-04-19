@@ -1,11 +1,12 @@
-// holds vote collection
-// holds aggregate statistics
+// Holds vote collection
+// Holds aggregate statistics
 
 var Backbone = require('backbone');
 var VotesCollection = require('../collections/VotesCollection').VotesCollection;
 var dbUtils = require('../utils/dbUtils');
 
 exports.SessionModel = Backbone.Model.extend({
+
   initialize: function() {
     this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
     dbUtils.openSessionInDb({
@@ -16,24 +17,26 @@ exports.SessionModel = Backbone.Model.extend({
     );
   },
 
-  // defaults is a function so VotesCollection is reinstantiated every time
+  // VotesCollection is reinstantiated for each new SessionModel
   defaults: function() {
     return {
       votes: new VotesCollection(),
 
-      // Used to compute current average
+      // For computing current average
       sumVoteVals: 0,
       voteCount: 0,
 
-      // Used to compute historical average
+      // For computing historical average
       cumSumVoteVals: 0,
       sumVoteCounts: 0,
 
       stepCount: 0,
       interval: 2000,
-      maxAge: 6*60*60*1000, // maxAge is 6 hours
 
-      // Used in forwarding changes to firebase
+      // maxAge is 6 hours
+      maxAge: 6*60*60*1000,
+
+      // For forwarding changes to firebase
       provider: null,
       hostId: null
     };
@@ -96,8 +99,8 @@ exports.SessionModel = Backbone.Model.extend({
     return this.get('cumSumVoteVals') / this.get('sumVoteCounts');
   },
 
+  // Counts only 'active' users
   getUserCount: function() {
-    // Counts only 'active' users
     return this.get('voteCount');
   }
 });

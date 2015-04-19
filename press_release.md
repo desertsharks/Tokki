@@ -9,18 +9,18 @@ We give presenters better insight into their audience engagement.  This gives th
 Events lack real-time engagement data.
 
 ## Solution ##
-We collect real-time participant data to relay to presenters. Data is available for future analysis.  
+We collect real-time participant data to relay to presenters. Data is available for future analysis.
 
 ## Quote from You ##
   > A quote from a spokesperson in your company.
 
 ## How to Get Started ##
   - Start up a session
-  
+
   - Share the session with the audience
-  
+
   - Audience can connect by smartphone or computer
-  
+
   - Let the data flow!
 
 ## Customer Quote ##

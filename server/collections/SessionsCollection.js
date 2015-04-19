@@ -1,4 +1,4 @@
-// holds all ongoing sessions
+// Holds all ongoing sessions
 
 var Backbone = require('backbone');
 var SessionModel = require('../models/SessionModel').SessionModel;
@@ -14,6 +14,8 @@ exports.SessionsCollection = Backbone.Collection.extend({
     this.add(session);
     return session.cid;
   },
+
+  // Removes a session and updates the database
   removeSession: function(sessionId) {
     var session = this.remove(sessionId);
     if(session) {
@@ -32,7 +34,6 @@ exports.SessionsCollection = Backbone.Collection.extend({
     }
   },
   changeVote: function(sessionId, userId, voteVal) {
-    // Returns hasChanged
     if (this.get(sessionId)) {
       this.get(sessionId).changeVote(userId, voteVal);
     }

@@ -3,9 +3,7 @@ var assert = chai.assert;
 var should = chai.should();
 var expect = chai.expect;
 
-/* You'll need to have Firebase and your Node archive server
- * running for these tests to pass. */
-
+// Firebase and Node archive server must be running for these tests to pass.
 var Firebase = require("firebase");
 var request = require("request");
 
@@ -24,8 +22,6 @@ xdescribe("Firebase data storage", function() {
          }};
   });
 
-  //var mongoServer = new mongodb.Server("127.0.0.1", 27017, {}); //replace with Node server
-
   var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
   it("Should store votes in Firebase", function(done) {
@@ -39,60 +35,44 @@ xdescribe("Firebase data storage", function() {
     // Open a session
     // Post a vote
     // Read vote
-    request({method: "POST",
-             uri: archiveServer,
-             form: archiveForm
-            },
-            function(error, response, body) {
-              /* Now if we look in the database, we should find the
-               * posted message there. */
+    request(
+      {
+        method: "POST",
+        uri: archiveServer,
+        form: archiveForm
+      },
+      function(error, response, body) {
+        waits(1000);
 
-              // Wait a second for it to be done archiving
-              waits(1000);
+        runs(function() {
+          mongoClient.open(function(err, p_client) {
+            var collectionName = "archive";
+            client.createCollection(collectionName, function(err, collection) {
+              collection.find().toArray(function(err, results) {
 
-              runs(function() {
-                mongoClient.open(function(err, p_client) {
-                  /* TODO edit this variable to match the name of
-                   * the collection you're using: */
-                  var collectionName = "archive";
-                  client.createCollection(collectionName, function(err, collection) {
-                    collection.find().toArray(function(err, results) {
-                      // Should have one result:
-                      expect(results.length).toEqual(1);
+                // Should have one result:
+                expect(results.length).toEqual(1);
+                expect(results[0].pageSource).toMatch(/Google/);
 
-                      /* TODO edit this test to match the name of the
-                       * property where you're storing the page source:*/
-                      expect(results[0].pageSource)
-                        .toMatch(/Google/);
-
-                      done();
-                    });
-                  });
-                });
+                done();
               });
             });
+          });
+        });
+      }
+    );
   });
 
   it("Should retrieve votes from Firebase", function(done) {
     mongoClient.open(function(err, p_client) {
-      /* TODO edit this variable to match the name of
-       * the collection you're using: */
       var collectionName = "archive";
       client.createCollection(collectionName, function(err, collection) {
 
-        /* We'll insert some fake page source data into
-         * the collection to simulate an archived page. Edit this
-         * to match the document field names that your code
-         * actually uses.*/
         var document = {url: "jono.com",
                         pageSource: "<html></html>" };
 
         collection.insert(document, function(err, docs) {
 
-          /* Now do a request to the archive server for this url
-           *and expect it to return the document.
-           * TODO edit these variables to match the interface of
-           * your archive server. */
           var archivedPage = "http://127.0.0.1:8080/jono.com";
 
           request(archivedPage, function(error, response, body) {

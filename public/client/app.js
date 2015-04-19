@@ -1,12 +1,9 @@
 angular.module('tokki', ['ui.router']);
 
-// These are the routes that are necessary for the project MVP.
-
 angular.module('tokki')
   .config(function($stateProvider, $urlRouterProvider) {
-  // If an unknown route is entered, it redirects to the home page.
-  $urlRouterProvider.otherwise('/home');
-  // Routes to the home page
+
+  // Routes to the home page.  Default to '/home'
   $stateProvider
     .state('home', {
       url: '/home',
@@ -31,4 +28,6 @@ angular.module('tokki')
       templateUrl: './views/hostSession.html',
       controller: 'HostController'
     });
+
+  $urlRouterProvider.otherwise('/home');
 });

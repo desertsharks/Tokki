@@ -8,9 +8,7 @@ angular.module('tokki')
     socket: null
   };
 
-  // Sends a request for a new session.
-  // Receives the sessionID of that session.
-
+  // Sends a request for a new session id
   var startSession = function(cb) {
     return $http({
       method: 'POST',
@@ -22,13 +20,12 @@ angular.module('tokki')
     });
   };
 
-  // Initiates socket connection
-  // Listens for socket events
+  // Initiates socket connection and istens for socket events
   var listen = function(cb) {
+
     session.socket = io.connect(window.location.host + '/host/' + session.id);
 
     session.socket.on('connect', function() {
-      // Listens for stats
       session.socket.on('stats', function(data) {
         cb(data);
       });
@@ -39,7 +36,7 @@ angular.module('tokki')
     });
   };
 
-  // Emit end to end a session
+  // Ends a session
   var endSession = function() {
     if(session.socket){
       session.socket.emit('end');

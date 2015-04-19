@@ -8,6 +8,7 @@ exports.init = function(sessionId, done) {
     io = require('../../server').io;
   }
 
+  // Guest Sessions
   var sessionGuestIo = io.of(sessionId);
   sessionGuestIo.on('connect', function(socket) {
     socket.on('vote', function(voteVal) {
@@ -18,9 +19,10 @@ exports.init = function(sessionId, done) {
     });
   });
 
-  // TODO: Add auth for this room
+  // Host Sessions
   var sessionHostIo = io.of('host/'+sessionId);
   sessionHostIo.on('connect', function(socket) {
+
     // Calls calculateStats every interval with the proper sessionId
     var intervalObject = setInterval(function() {
       hostController.calculateStats(sessionId, function(data) {
