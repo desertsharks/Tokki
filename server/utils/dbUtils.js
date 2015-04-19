@@ -10,7 +10,7 @@ var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desert
 // if user does not exist, add user
 //  - provider, profile, callback  (provider ex: "facebook", profile: {id, displayName})
 
-//Opens a new session when created by the host
+// Opens a new session when created by the host
 exports.openSessionInDb =function(sessionInfo, cb) {
   cb = cb || function(err) {
     if (err) {
@@ -23,21 +23,21 @@ exports.openSessionInDb =function(sessionInfo, cb) {
   }, cb);
 };
 
-//Adds an endTime property to sessionInfo object
+// Adds an endTime property to sessionInfo object
 exports.closeSessionInDb = function(sessionInfo) {
-  sessionRef.child(sessionInfo.sessionId).update({
+  sessionRef.child(sessionInfo.sessionId).update({ // Path should include provider and hostId
     endTime: Firebase.ServerValue.TIMESTAMP
   });
 };
 
-//Adds Votes into the database for an existing session
+// Adds Votes into the database for an existing session
 exports.addToDb = function(sessionInfo, voteInfo) {
   var addEntry = function() {
-    sessionRef.child(sessionInfo.sessionId).push(voteInfo);
+    sessionRef.child(sessionInfo.sessionId).push(voteInfo); // Path should include provider and hostId
   };
-  //Look up the session ID
-  //If it exists, push a new {userID, timeStamp, voteVal} into that session
-  sessionRef.once('value', function(snapshot) {
+  // Look up the session ID
+  // If it exists, push a new {userID, timeStamp, voteVal} into that session
+  sessionRef.once('value', function(snapshot) { // Path should include provider and hostId
     if (snapshot.exists()) {
       addEntry();
     } else {
@@ -53,7 +53,7 @@ exports.addToDb = function(sessionInfo, voteInfo) {
     console.error('Failed to addToDb:', err);
   });
 
-//Notification of votes for testing purposes
+// Notification of votes for testing purposes
   // ref.on("child_changed", function(snapshot) {
   //   var newVote = snapshot.val();
   //   console.log("User# "+newVote.guestId+ " just voted "  + newVote.voteVal);
@@ -61,12 +61,12 @@ exports.addToDb = function(sessionInfo, voteInfo) {
 };
 
 exports.getFromDb = function(sessionInfo) {
-//Intended for post-session data analysis by host
-//Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
+// Intended for post-session data analysis by host
+// Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
 
   var sessionResults = [];
 
-  sessionRef.orderByChild('session').equalTo(sessionInfo.sessionId).on('child_added', function(snapshot) {
+  sessionRef.orderByChild('session').equalTo(sessionInfo.sessionId).on('child_added', function(snapshot) { // Path should include provider and hostId
     sessionResults.push(snapshot.key());
   });
 
