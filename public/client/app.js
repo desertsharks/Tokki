@@ -1,8 +1,8 @@
-var app = angular.module('greenfield', ['ui.router']);
+angular.module('tokki', ['ui.router']);
 
 // These are the routes that are necessary for the project MVP.
 
-angular.module('greenfield')
+angular.module('tokki')
   .config(function($stateProvider, $urlRouterProvider) {
   // If an unknown route is entered, it redirects to the home page.
   $urlRouterProvider.otherwise('/home');
@@ -15,7 +15,7 @@ angular.module('greenfield')
     })
     // Routes to the guest session view
     .state('guestSession', {
-      url: '/guestSession',
+      url: '/guestSession/:guestId',
       templateUrl: './views/guestSession.html',
       controller: 'GuestController'
     })

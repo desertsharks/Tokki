@@ -1,71 +1,111 @@
 var Firebase = require('firebase');
-var sessionRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
+var dBRef = new Firebase('https://scorching-fire-8470.firebaseio.com/desertShark/');
 
-// TODO: Auth
-
-// Opens a new session when created by the host
-exports.openSessionInDb =function(sessionId, cb) {
-  cb = cb || function(err) {
+// Helper methods
+var defaultCb = function(message) {
+  message = message || 'Failed to access database';
+  return function(err) {
     if (err) {
-      console.error('Failed to open session:', err);
+      console.error(message, err);
     }
   };
-  sessionRef.child(sessionId).set({
-    startTime: Firebase.ServerValue.TIMESTAMP,
-    endTime: null
+};
+var sessionRef = function(sessionInfo) {
+  return dBRef.child(sessionInfo.provider).child(sessionInfo.hostId).child('sessions').child(sessionInfo.sessionId);
+};
+var validateSession = function(sessionInfo) {
+  return sessionInfo && sessionInfo.provider && sessionInfo.hostId && sessionInfo.sessionId;
+};
+
+// Opens a new session when created by the host
+exports.openSessionInDb =function(sessionInfo, cb) {
+  if(!validateSession(sessionInfo)) {
+    return;
+  }
+  cb = cb || defaultCb('Failed to open session');
+  sessionRef(sessionInfo).set({
+    startTime: Firebase.ServerValue.TIMESTAMP
   }, cb);
 };
 
-// Adds an endTime property to sessionId object
-exports.closeSessionInDb = function(sessionId) {
-  sessionRef.child(sessionId).update({
+// Adds an endTime property to sessionInfo object
+exports.closeSessionInDb = function(sessionInfo, cb) {
+  if(!validateSession(sessionInfo)) {
+    return;
+  }
+  cb = cb || defaultCb('Failed to close session');
+  sessionRef(sessionInfo).update({
     endTime: Firebase.ServerValue.TIMESTAMP
-  });
+  }, cb);
 };
 
 // Adds Votes into the database for an existing session
-exports.addToDb = function(sessionId, guestId, voteVal, timeStep) {
-  var addEntry = function() {
-    sessionRef.child(sessionId).push({
-      guestId: guestId,
-      voteVal: voteVal,
-      timeStep: timeStep
-    });
-  };
-  // Look up the session ID
-  // If it exists, push a new {userID, timeStamp, voteVal} into that session
-  sessionRef.once('value', function(snapshot) {
-    if (snapshot.exists()) {
-      addEntry();
-    } else {
-      exports.openSessionInDb(sessionId, function(err) {
-        if (err) {
-          console.error('Failed to open session:', err);
-        } else {
-          addEntry();
-        }
-      });
-    }
-  }, function(err) {
-    console.error('Failed to addToDb:', err);
-  });
-
-// Notification of votes for testing purposes
-  // ref.on("child_changed", function(snapshot) {
-  //   var newVote = snapshot.val();
-  //   console.log("User# "+newVote.guestId+ " just voted "  + newVote.voteVal);
-  // });
+exports.addToDb = function(sessionInfo, voteInfo, cb) {
+  if(!validateSession(sessionInfo)) {
+    return;
+  }
+  cb = cb || defaultCb('Failed to add entry');
+  sessionRef(sessionInfo).child('votes').push(voteInfo, cb);
 };
 
-exports.getFromDb = function(sessionId) {
 // Intended for post-session data analysis by host
-// Returns data in the form of an array with {userID, timeStamp, voteVal} key-value objects
+// Returns data in the form of an object: {
+//   startTime: 1429426355540,
+//   endTime: 1429426355326,
+//   votes: [
+//     {
+//       guestId: 'bcd',
+//       timeStep: 1,
+//       voteVal: 2
+//     },
+//     ...
+//   ]
+// }
+exports.getFromDb = function(sessionInfo, cb) {
+  cb = cb || defaultCb('Failed to retreive session data');
+  if(!validateSession(sessionInfo)) {
+    return cb('getFromDb: sessionInfo params not specified');
+  }
 
-  var sessionResults = [];
+  var sessionResults = {votes: []};
+  sessionRef(sessionInfo).once('value', function(snapshot) {
+      var sessionObj = snapshot.val();
+      sessionResults.startTime = sessionObj.startTime;
+      sessionResults.endTime = sessionObj.endTime;
+      var remaining = Object.keys(sessionObj.votes).length;
 
-  sessionRef.orderByChild('session').equalTo(sessionId).on('child_added', function(snapshot) {
-    sessionResults.push(snapshot.key());
+      // Called once for each child_added event, fires when all are complete
+      var oneDone = function() {
+        remaining--;
+        if (!remaining) {
+          sessionRef(sessionInfo).child('votes').orderByKey().off('child_added', onChildAdded);
+          cb(null, sessionResults);
+        }
+      };
+      // Edge case of no votes where oneDone would never be called otherwise
+      if (!remaining) {
+        remaining++;
+        oneDone();
+      }
+
+      var onChildAdded = sessionRef(sessionInfo).child('votes').orderByKey().on('child_added', function(snapshot) {
+          sessionResults.votes.push(snapshot.val());
+          oneDone();
+        }, function (errorObject) {
+          return cb('Reading from db failed: ' + errorObject.code);
+      });
+    }, function (errorObject) {
+      return cb('Reading from db failed: ' + errorObject.code);
   });
+};
 
-  return sessionResults;
+// Firebase creates the user if entry does not exist
+exports.updateUser = function(provider, profile, cb) {
+  cb = cb || defaultCb('Failed to create user');
+  dBRef.child(provider).child(profile.id).update({displayName:profile.displayName}, cb);
+};
+
+// Switches to a new ref for testing purposes
+exports._changeRef = function(newRef) {
+  dBRef = newRef || dBRef;
 };

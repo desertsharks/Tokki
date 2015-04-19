@@ -1,5 +1,5 @@
 // Socket helper functions
-angular.module('greenfield')
+angular.module('tokki')
   .factory('GuestServices', function($http) {
 
   var session = {
@@ -40,7 +40,7 @@ angular.module('greenfield')
   var vote = function(voteData) {
     if(session.socket){
       console.log('vote:' + voteData);
-      session.socket.emit(voteData);
+      session.socket.emit('vote', voteData);
     }
   };
 

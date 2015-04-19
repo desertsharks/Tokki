@@ -26,19 +26,11 @@ module.exports = function(passport) {
       profileFields: ['id', 'displayName']
     },
     function(accessToken, refreshToken, profile, done) {
-      dbUtils.getOrCreateProvider('facebook', function(err) {
+      dbUtils.updateUser('facebook', profile, function(err) {
         if (err) {
-          console.error('Failed to get/create Facebook');
+          console.error('Failed to get/create user');
         } else {
-          // Arguments of provider, profile, callback
-          // Stores profile.id, profile.displayName if necessary
-          dbUtils.getOrCreateUser('facebook', profile, function(err) {
-            if (err) {
-              console.error('Failed to get/create user');
-            } else {
-              done(null, user);
-            }
-          });
+          done(null, user);
         }
       });
     }

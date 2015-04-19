@@ -1,5 +1,5 @@
 // Socket helper functions
-angular.module('greenfield')
+angular.module('tokki')
   .factory('HostServices', function($http) {
 
   var session = {
@@ -26,7 +26,6 @@ angular.module('greenfield')
   // Listens for socket events
   var listen = function(cb) {
     session.socket = io.connect(window.location.host + '/host/' + session.id);
-    console.log(window.location.host + '/host/' + session.id);
 
     session.socket.on('connect', function() {
       // Listens for stats
@@ -40,7 +39,7 @@ angular.module('greenfield')
     });
   };
 
-  // emit end to end a session
+  // Emit end to end a session
   var endSession = function() {
     if(session.socket){
       session.socket.emit('end');
