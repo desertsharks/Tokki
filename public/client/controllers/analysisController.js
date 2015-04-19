@@ -1,6 +1,18 @@
 angular.module('tokki')
   .controller('AnalysisController', ['$scope', 'AnalysisServices', function($scope, AnalysisServices) {
+  //Sample data for now
+  $scope.sessions = {
+    c1:{
+      id: c1,
+      startTime: 0900,
+      elapsedTime: 89000,
+      cumSumVoteVals: 20,
+      sumVoteCounts: 10,
 
+    }
+
+
+  };
   $scope.selectedSessionId = null;
   $scope.currHostId = null;
 
