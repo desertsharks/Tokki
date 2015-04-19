@@ -4,9 +4,11 @@ angular.module('tokki')
 
   var session = {
     id: '',
-    url: '/host',
-    //provider: '', //where can we get this from GET
-    socket: null
+    url: '#/api/',
+    socket: null,
+    //Where can we get the hostId & sessionId in $scope?
+    hostId: hostId,
+    sessionId: ,
     data: data
   };
 
@@ -17,12 +19,11 @@ angular.module('tokki')
     return $http({
       method: 'GET',
       //Call to Server, who has DB methods
-      url: session.url + '/' + sesssion.hostID
+      url: session.url + '/' + sesssion.hostId
     })
     .then(function(resp) {
       console.log("SessionHistory called");
       // Historical data pulled from server via db
-
       session.data = resp.data;
       cb(resp.data);
     });
@@ -34,7 +35,7 @@ angular.module('tokki')
   var sessionAnalysis = function(cb){
     return $http({
       method: 'GET',
-      url: '#/hostAnalysisView'
+      url: session.url + session.hostId + '/' + session.sessionId
     })
     .then(function(resp){
       console.log("SessionAnalysis called");
