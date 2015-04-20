@@ -109,7 +109,9 @@ exports.getSessionsFromDb = function(userInfo, cb) {
         results.unshift({
           sessionId: snapshot.key(),
           startTime: session.startTime,
-          duration: session.endTime - session.startTime,
+
+          // These values are undefined if the session is not yet closed
+          duration: session.endTime ? session.endTime - session.startTime : undefined,
           weightedAverage: session.weightedAverage,
           userCount: session.userCount
         });
