@@ -1,30 +1,28 @@
 angular.module('tokki')
   .controller('AnalysisController', ['$scope', 'AnalysisServices', function($scope, AnalysisServices) {
-  //Sample data for now
+  //Sample data for testing hostHistoryView
   $scope.sessions = {
-    c1:{
-      1234: {
-        guestId: person1,
-        timeStep: 43,
-        voteVal: 0
-      },
-      12345: {
-        guestId: person2,
-        timeStep: 41,
-        voteVal: 1
-      },
-      12222: {
-        guestId: person3,
-        timeStep: 48,
-        voteVal: 2
-      },
-      startTime: 1429476075172,
-      endTime: 1429476075172
-
+    session1:{
+     sessionId: c22,
+     startTime: 1429426355540,
+     duration: 28420345,
+     weightedAverage: 1.212,
+     userCount: 2306
+    },
+    session2:{
+     sessionId: c33,
+     startTime: 1429426355545,
+     duration: 2842034,
+     weightedAverage: 0.66,
+     userCount: 488
     }
-
-
   };
+
+  $scope.rows = [];
+
+
+  // May use later when recieved from auth
+  // to automatically select the host's sessions
   $scope.selectedSessionId = null;
   $scope.currHostId = null;
 
