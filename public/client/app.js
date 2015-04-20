@@ -31,7 +31,7 @@ angular.module('tokki')
       templateUrl: './views/hostSession.html',
       controller: 'HostController'
     })
-    //Route
+    // Routes to the services controller
     .state('hostHistoryView', {
       url: '/hostHistoryView',
       templateUrl: './views/hostHistoryView.html',
