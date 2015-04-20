@@ -43,5 +43,8 @@ angular.module('tokki')
       templateUrl: './views/hostAnalysisView.html',
       controller: 'AnalysisController'
     })
-
+    .state('hostLoginView', {
+      url: '/hostLogin',
+      templateUrl: './views/hostLoginView.html'
+    })
 });
