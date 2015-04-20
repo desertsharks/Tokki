@@ -27,7 +27,11 @@ app.use(express.static(path.join(__dirname, '../public/client')));
 
 // Required for passport
 // TODO: Select a compatible session store for production environments
-app.use(session({secret: config.sessionSecret}));
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: config.sessionSecret
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

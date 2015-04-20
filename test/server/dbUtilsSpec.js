@@ -13,7 +13,16 @@ describe('dbUtils', function() {
   var sessionInfo = {
     provider: 'facebook',
     hostId: 'abc',
-    sessionId: 'c22'
+    sessionId: 'c22',
+    interval: 2000,
+    weightedAverage: 2.2
+  };
+  var sessionInfo2 = {
+    provider: 'facebook',
+    hostId: 'abc',
+    sessionId: 'c28',
+    interval: 2000,
+    weightedAverage: -1.1
   };
   var voteInfo = {
     guestId: 'bcd',
@@ -33,7 +42,11 @@ describe('dbUtils', function() {
         dbUtils.openSessionInDb(sessionInfo, function() {
           dbUtils.addToDb(sessionInfo, voteInfo, function() {
             dbUtils.addToDb(sessionInfo, voteInfo2, function() {
-              dbUtils.closeSessionInDb(sessionInfo, done);
+              dbUtils.closeSessionInDb(sessionInfo, function() {
+                dbUtils.openSessionInDb(sessionInfo2, function() {
+                  dbUtils.closeSessionInDb(sessionInfo2, done);
+                });
+              });
             });
           });
         });
@@ -73,10 +86,23 @@ describe('dbUtils', function() {
       done();
     });
   });
+  it('retrieves sessions from the database', function(done) {
+    dbUtils.getSessionsFromDb({provider: 'facebook', hostId: 'abc'}, function(err, data) {
+      expect(data).to.be.an('array');
+      expect(data.length).to.equal(2);
+      expect(data[0].startTime).to.be.a('number');
+      expect(data[0].startTime > data[1].startTime).to.equal(true);
+      expect(data[0].sessionId).to.be.a('string');
+      expect(data[0].weightedAverage).to.be.a('number');
+      done();
+    });
+  });
   it('gets session data from the database', function(done) {
-    dbUtils.getFromDb(sessionInfo, function(err, data) {
+    dbUtils.getSessionFromDb(sessionInfo, function(err, data) {
       expect(data.startTime).to.be.a('number');
       expect(data.endTime).to.be.a('number');
+      expect(data.interval).to.be.a('number');
+      expect(data.weightedAverage).to.be.a('number');
       expect(data.votes).to.deep.equal([voteInfo, voteInfo2]);
       done();
     });

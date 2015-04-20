@@ -20,7 +20,8 @@ exports.SessionsCollection = Backbone.Collection.extend({
       dbUtils.closeSessionInDb({
         provider: session.get('provider'),
         hostId: session.get('hostId'),
-        sessionId: sessionId
+        sessionId: sessionId,
+        weightedAverage: session.getHistoricalAverage()
       });
     }
   },
