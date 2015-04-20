@@ -10,11 +10,45 @@ var defaultCb = function(message) {
     }
   };
 };
+// Provides an easier way to access the desired reference
+var sessionsRef = function(userInfo) {
+  return dBRef.child(userInfo.provider).child(userInfo.hostId).child('sessions');
+};
 var sessionRef = function(sessionInfo) {
-  return dBRef.child(sessionInfo.provider).child(sessionInfo.hostId).child('sessions').child(sessionInfo.sessionId);
+  return sessionsRef(sessionInfo).child(sessionInfo.sessionId);
+};
+// Ensures that the appropriate parameters are present
+var validateUser = function(userInfo) {
+  return userInfo && userInfo.provider && userInfo.hostId;
 };
 var validateSession = function(sessionInfo) {
-  return sessionInfo && sessionInfo.provider && sessionInfo.hostId && sessionInfo.sessionId;
+  return validateUser(sessionInfo) && sessionInfo.sessionId;
+};
+// Turns a firebase object of children into an ordered array with the desired criteria
+var gatherChildren = function(ref, numChildren, addToResults, allDone) {
+  var remaining = numChildren;
+  var results = [];
+
+  // Called once for each child_added event, fires when all are complete
+  var oneDone = function() {
+    remaining--;
+    if (!remaining) {
+      ref.orderByKey().off('child_added', onChildAdded);
+      allDone(null, results);
+    }
+  };
+  // Edge case of no votes where oneDone would never be called otherwise
+  if (!remaining) {
+    remaining++;
+    oneDone();
+  }
+
+  var onChildAdded = ref.orderByKey().on('child_added', function(snapshot) {
+      addToResults(results, snapshot);
+      oneDone();
+    }, function (errorObject) {
+      return allDone('Reading from db failed: ' + errorObject.code);
+  });
 };
 
 // Opens a new session when created by the host
@@ -39,13 +73,37 @@ exports.closeSessionInDb = function(sessionInfo, cb) {
   }, cb);
 };
 
-// Adds Votes into the database for an existing session
+// Adds votes into the database for an existing session
 exports.addToDb = function(sessionInfo, voteInfo, cb) {
   if(!validateSession(sessionInfo)) {
     return;
   }
   cb = cb || defaultCb('Failed to add entry');
   sessionRef(sessionInfo).child('votes').push(voteInfo, cb);
+};
+
+// Intended to retrieve sessions for host to choose a session from
+// Returns data in the form on an array sorted with latest first: [
+//   {
+//     startTime: 1429426355540,
+//     sessionId: c22
+//   },
+//   ...
+// ]
+exports.getSessionsFromDb = function(userInfo, cb) {
+  cb = cb || defaultCb('Failed to retrieve sessions');
+  if(!validateUser(userInfo)) {
+    return cb('getSessionsFromDb failed: userInfo params not specified');
+  }
+
+  var sessions = [];
+  sessionsRef(userInfo).once('value', function(snapshot) {
+      gatherChildren(sessionsRef(userInfo), Object.keys(snapshot.val()).length, function(results, snapshot) {
+        results.unshift({startTime: snapshot.val().startTime, sessionId: snapshot.key()});
+      }, cb);
+    }, function (errorObject) {
+      return cb('Reading from db failed: ' + errorObject.code);
+  });
 };
 
 // Intended for post-session data analysis by host
@@ -61,38 +119,23 @@ exports.addToDb = function(sessionInfo, voteInfo, cb) {
 //     ...
 //   ]
 // }
-exports.getFromDb = function(sessionInfo, cb) {
-  cb = cb || defaultCb('Failed to retreive session data');
+exports.getSessionFromDb = function(sessionInfo, cb) {
+  cb = cb || defaultCb('Failed to retrieve session data');
   if(!validateSession(sessionInfo)) {
-    return cb('getFromDb: sessionInfo params not specified');
+    return cb('getSessionFromDb failed: sessionInfo params not specified');
   }
 
-  var sessionResults = {votes: []};
+  var sessionResults = {};
   sessionRef(sessionInfo).once('value', function(snapshot) {
       var sessionObj = snapshot.val();
       sessionResults.startTime = sessionObj.startTime;
       sessionResults.endTime = sessionObj.endTime;
-      var remaining = Object.keys(sessionObj.votes).length;
 
-      // Called once for each child_added event, fires when all are complete
-      var oneDone = function() {
-        remaining--;
-        if (!remaining) {
-          sessionRef(sessionInfo).child('votes').orderByKey().off('child_added', onChildAdded);
-          cb(null, sessionResults);
-        }
-      };
-      // Edge case of no votes where oneDone would never be called otherwise
-      if (!remaining) {
-        remaining++;
-        oneDone();
-      }
-
-      var onChildAdded = sessionRef(sessionInfo).child('votes').orderByKey().on('child_added', function(snapshot) {
-          sessionResults.votes.push(snapshot.val());
-          oneDone();
-        }, function (errorObject) {
-          return cb('Reading from db failed: ' + errorObject.code);
+      gatherChildren(sessionRef(sessionInfo).child('votes'), Object.keys(sessionObj.votes).length, function(results, snapshot) {
+          results.push(snapshot.val());
+        }, function(err, data) {
+          sessionResults.votes = data;
+          cb(err, sessionResults);
       });
     }, function (errorObject) {
       return cb('Reading from db failed: ' + errorObject.code);
