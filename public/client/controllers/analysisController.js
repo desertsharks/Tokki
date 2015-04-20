@@ -3,11 +3,23 @@ angular.module('tokki')
   //Sample data for now
   $scope.sessions = {
     c1:{
-      id: c1,
-      startTime: 0900,
-      elapsedTime: 89000,
-      cumSumVoteVals: 20,
-      sumVoteCounts: 10,
+      1234: {
+        guestId: person1,
+        timeStep: 43,
+        voteVal: 0
+      },
+      12345: {
+        guestId: person2,
+        timeStep: 41,
+        voteVal: 1
+      },
+      12222: {
+        guestId: person3,
+        timeStep: 48,
+        voteVal: 2
+      },
+      startTime: 1429476075172,
+      endTime: 1429476075172
 
     }
 
