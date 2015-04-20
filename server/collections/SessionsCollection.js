@@ -21,7 +21,8 @@ exports.SessionsCollection = Backbone.Collection.extend({
         provider: session.get('provider'),
         hostId: session.get('hostId'),
         sessionId: sessionId,
-        weightedAverage: session.getHistoricalAverage()
+        weightedAverage: session.getHistoricalAverage(),
+        userCount: session.get('votes').length
       });
     }
   },
