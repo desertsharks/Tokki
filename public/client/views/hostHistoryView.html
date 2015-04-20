@@ -1,25 +1,20 @@
 <!-- This page will contain a list of a host"s historic session links to view -->
-
 <h3>Select a session:</h3>
 <!-- Where historic sessions can be appended -->
-<form name="SessionsForm" ng-controller="AnalysisController">
-<table align = "center" class="sessions">
+<table align="center">
+<tbody ng-app="tokki" ng-controller="AnalysisController">
 <!--Columns declared -->
-<tr><th>Session ID</th><th>Start Time</th><th>Duration</th><th>Average</th><th>Total Votes</th></tr>
+<tr><th> Session ID</th><th>Start Time</th><th>Duration</th><th>Average</th><th>User Count</th></tr>
 <!-- Additional sessions defined and appended-->
-<tr><td colspan="5" ></td></tr>
-<tr ng-repeat="session in sessions | filter: hostId | orderBy: timeStart">
-  <td><input required ng-model="session.id"><a href = "#/api/"+session.id >{{session.sessionId}} </a></td>
-  <td><select ng-model="session.users">{{session.userCount}}</select></td>
-  <td><select ng-model="session.startTime">{{session.startTime}}</select></td>
-  <td><input required ng-model="session.timeElapsed">{{Math.floor(session.duration / 1000)}}</td>
-  <td><select ng-model="session" ng-options="">{{session.cumSumVoteVals / sumVoteCounts}}</td>
-  <td><input required ng-model="session.sumVoteCounts">{{session.sumVoteCounts}}</td>
+
+<!--<tr><td colspan="5" ></td></tr> -->
+<tr ng:repeat="session in sessions | orderBy: session.startTime">
+  <td><!--<a href = "#/api/"+session.id > -->{{session.sessionId}} </td>
+  <td>{{session.startTime}}</td>
+  <td>{{session.duration}}</td>
+  <td>{{session.weightedAverage}}</td>
+  <td>{{session.userCount}}</td>
 </tr>
-<tr><td colspan="5"></tr>
+<!--<tr><td colspan="5"></tr> -->
 </table>
 </form>
-
-
-
-<button id="logout">Logout</button>
