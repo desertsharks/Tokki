@@ -39,7 +39,10 @@ exports.SessionModel = Backbone.Model.extend({
 
       // Used in forwarding changes to firebase
       provider: null,
-      hostId: null
+      hostId: null,
+
+      // Lazy way to avoid collisions
+      cid: Math.random().toString(36).substring(2)
     };
   },
 
