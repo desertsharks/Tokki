@@ -14,12 +14,9 @@ module.exports = function(passport) {
   });
 
   // Facebook authentication
-  passport.use(new FacebookStrategy({
-      clientID : config.facebookAuth.clientID,
-      clientSecret : config.facebookAuth.clientSecret,
-      callbackURL : process.env ? config.facebookAuth.callbackURL : config.facebookAuth.devCallbackUrl,
-      profileFields: ['id', 'displayName']
-    },
+  var facebookAuth = process.env.PORT ? config.facebookAuth.prod : config.facebookAuth.dev; // Presumably there's a better test than simply port
+  facebookAuth.profileFields = ['id', 'displayName'];
+  passport.use(new FacebookStrategy(facebookAuth,
     function(accessToken, refreshToken, profile, done) {
       dbUtils.updateUser('facebook', profile, function(err) {
         if (err) {
