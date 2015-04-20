@@ -58,7 +58,8 @@ exports.openSessionInDb =function(sessionInfo, cb) {
   }
   cb = cb || defaultCb('Failed to open session');
   sessionRef(sessionInfo).set({
-    startTime: Firebase.ServerValue.TIMESTAMP
+    startTime: Firebase.ServerValue.TIMESTAMP,
+    interval: sessionInfo.interval
   }, cb);
 };
 
@@ -69,7 +70,8 @@ exports.closeSessionInDb = function(sessionInfo, cb) {
   }
   cb = cb || defaultCb('Failed to close session');
   sessionRef(sessionInfo).update({
-    endTime: Firebase.ServerValue.TIMESTAMP
+    endTime: Firebase.ServerValue.TIMESTAMP,
+    weightedAverage: sessionInfo.weightedAverage
   }, cb);
 };
 
@@ -86,7 +88,8 @@ exports.addToDb = function(sessionInfo, voteInfo, cb) {
 // Returns data in the form on an array sorted with latest first: [
 //   {
 //     startTime: 1429426355540,
-//     sessionId: c22
+//     sessionId: c22,
+//     weightedAverage: 1.212
 //   },
 //   ...
 // ]
@@ -99,7 +102,12 @@ exports.getSessionsFromDb = function(userInfo, cb) {
   var sessions = [];
   sessionsRef(userInfo).once('value', function(snapshot) {
       gatherChildren(sessionsRef(userInfo), Object.keys(snapshot.val()).length, function(results, snapshot) {
-        results.unshift({startTime: snapshot.val().startTime, sessionId: snapshot.key()});
+        var session = snapshot.val();
+        results.unshift({
+          startTime: session.startTime,
+          sessionId: snapshot.key(),
+          weightedAverage: session.weightedAverage
+        });
       }, cb);
     }, function (errorObject) {
       return cb('Reading from db failed: ' + errorObject.code);
@@ -130,6 +138,8 @@ exports.getSessionFromDb = function(sessionInfo, cb) {
       var sessionObj = snapshot.val();
       sessionResults.startTime = sessionObj.startTime;
       sessionResults.endTime = sessionObj.endTime;
+      sessionResults.interval = sessionObj.interval;
+      sessionResults.weightedAverage = sessionObj.weightedAverage;
 
       gatherChildren(sessionRef(sessionInfo).child('votes'), Object.keys(sessionObj.votes).length, function(results, snapshot) {
           results.push(snapshot.val());

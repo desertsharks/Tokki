@@ -7,6 +7,7 @@ module.exports = function(app, passport) {
   });
   app.post('/logout', hostController.logout);
   app.post('/new', isLoggedIn, hostController.registerSession);
+  app.get('/old/:sessionId', isLoggedIn, hostController.retrieveSession);
   app.get('/old', isLoggedIn, hostController.retrieveSessions);
   app.get('/:sessionId', hostController.redirect);
   app.get('/', hostController.redirect);

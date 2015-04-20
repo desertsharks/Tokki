@@ -13,12 +13,16 @@ describe('dbUtils', function() {
   var sessionInfo = {
     provider: 'facebook',
     hostId: 'abc',
-    sessionId: 'c22'
+    sessionId: 'c22',
+    interval: 2000,
+    weightedAverage: 2.2
   };
   var sessionInfo2 = {
     provider: 'facebook',
     hostId: 'abc',
-    sessionId: 'c28'
+    sessionId: 'c28',
+    interval: 2000,
+    weightedAverage: -1.1
   };
   var voteInfo = {
     guestId: 'bcd',
@@ -87,10 +91,9 @@ describe('dbUtils', function() {
       expect(data).to.be.an('array');
       expect(data.length).to.equal(2);
       expect(data[0].startTime).to.be.a('number');
-      expect(data[1].startTime).to.be.a('number');
       expect(data[0].startTime > data[1].startTime).to.equal(true);
       expect(data[0].sessionId).to.be.a('string');
-      expect(data[1].sessionId).to.be.a('string');
+      expect(data[0].weightedAverage).to.be.a('number');
       done();
     });
   });
@@ -98,6 +101,8 @@ describe('dbUtils', function() {
     dbUtils.getSessionFromDb(sessionInfo, function(err, data) {
       expect(data.startTime).to.be.a('number');
       expect(data.endTime).to.be.a('number');
+      expect(data.interval).to.be.a('number');
+      expect(data.weightedAverage).to.be.a('number');
       expect(data.votes).to.deep.equal([voteInfo, voteInfo2]);
       done();
     });

@@ -7,11 +7,14 @@ var dbUtils = require('../utils/dbUtils');
 
 exports.SessionModel = Backbone.Model.extend({
   initialize: function() {
-    this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
+    if (this.get('autoUpdate')) {
+      this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
+    }
     dbUtils.openSessionInDb({
         provider: this.get('provider'),
         hostId: this.get('hostId'),
-        sessionId: this.cid
+        sessionId: this.cid,
+        interval: this.get('interval')
       }, this.get('cb')
     );
   },
@@ -30,6 +33,7 @@ exports.SessionModel = Backbone.Model.extend({
       sumVoteCounts: 0,
 
       stepCount: 0,
+      autoUpdate: true,
       interval: 2000,
       maxAge: 6*60*60*1000, // maxAge is 6 hours
 
@@ -40,7 +44,9 @@ exports.SessionModel = Backbone.Model.extend({
   },
 
   end: function() {
-    clearInterval(this.get('intervalObject'));
+    if (this.get('autoUpdate')) {
+      clearInterval(this.get('intervalObject'));
+    }
     if (this.collection) {
       this.collection.removeSession(this.cid);
     }
