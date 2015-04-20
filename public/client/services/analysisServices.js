@@ -41,8 +41,8 @@ angular.module('tokki')
       console.log("SessionAnalysis called");
       session.data = resp.data;
       cb(resp.data);
-    })
-  }
+    });
+  };
 
 
   return {
