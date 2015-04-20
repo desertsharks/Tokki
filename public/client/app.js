@@ -46,5 +46,5 @@ angular.module('tokki')
     .state('hostLoginView', {
       url: '/hostLogin',
       templateUrl: './views/hostLoginView.html'
-    })
+    });
 });

@@ -32,7 +32,7 @@ angular.module('tokki')
   $scope.sessionAnalysis = function(){
     console.log("Session Analysis");
     AnalysisServices.sessionAnalysis();
-  }
+  };
 
 
 }]);
