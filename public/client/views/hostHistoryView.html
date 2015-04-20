@@ -9,7 +9,7 @@
 
 <!--<tr><td colspan="5" ></td></tr> -->
 <tr ng:repeat="session in sessions | orderBy: session.startTime">
-  <td><!--<a href = "#/api/"+session.id > -->{{session.sessionId}} </td>
+  <td>{{session.sessionId}} </td>
   <td>{{session.startTime}}</td>
   <td>{{session.duration}}</td>
   <td>{{session.weightedAverage}}</td>

@@ -1,22 +1,5 @@
 angular.module('tokki')
   .controller('AnalysisController', ['$scope', 'AnalysisServices', function($scope, AnalysisServices) {
-  //Sample data for testing hostHistoryView
-  $scope.sessions = {
-    session1:{
-     sessionId: c22,
-     startTime: 1429426355540,
-     duration: 28420345,
-     weightedAverage: 1.212,
-     userCount: 2306
-    },
-    session2:{
-     sessionId: c33,
-     startTime: 1429426355545,
-     duration: 2842034,
-     weightedAverage: 0.66,
-     userCount: 488
-    }
-  };
 
   $scope.rows = [];
 
@@ -35,7 +18,9 @@ angular.module('tokki')
   // Pulls data from DB for analysis
   $scope.sessionHistory = function(){
     console.log("Accessing history...");
-    $scope.sessionHistory();
+    AnalysisServices.sessionHistory(function(data) {
+      $scope.sessions = data;
+    });
   };
 
   // Presents analysis for a specific session
@@ -44,5 +29,6 @@ angular.module('tokki')
     AnalysisServices.sessionAnalysis();
   };
 
+  $scope.sessionHistory();
 
 }]);
