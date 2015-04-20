@@ -9,9 +9,10 @@
 <!-- Additional sessions defined and appended-->
 <tr><td colspan="5" ></td></tr>
 <tr ng-repeat="session in sessions | filter: hostId | orderBy: timeStart">
-  <td><input required ng-model="session.id"><a href = "#/api/"+session.id >{{session.id}} </a></td>
-  <td><select ng-model="session.startTime" >{{session.startTime}}</select></td>
-  <td><input required ng-model="session.timeElapsed">{{session.elapsedTime}}</td>
+  <td><input required ng-model="session.id"><a href = "#/api/"+session.id >{{session.sessionId}} </a></td>
+  <td><select ng-model="session.users">{{session.userCount}}</select></td>
+  <td><select ng-model="session.startTime">{{session.startTime}}</select></td>
+  <td><input required ng-model="session.timeElapsed">{{Math.floor(session.duration / 1000)}}</td>
   <td><select ng-model="session" ng-options="">{{session.cumSumVoteVals / sumVoteCounts}}</td>
   <td><input required ng-model="session.sumVoteCounts">{{session.sumVoteCounts}}</td>
 </tr>

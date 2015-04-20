@@ -36,8 +36,8 @@ angular.module('tokki')
 
   // Pulls data from DB for analysis
   $scope.sessionHistory = function(){
-    console.log("Accessing session data");
-    AnalysisServices.sessionHistory();
+    console.log("Accessing history...");
+    $scope.sessionHistory();
   };
 
   // Presents analysis for a specific session

@@ -19,7 +19,7 @@ angular.module('tokki')
     return $http({
       method: 'GET',
       //Call to Server, who has DB methods
-      url: session.url + '/' + sesssion.hostId
+      url: session.url + '/host/old'
     })
     .then(function(resp) {
       console.log("SessionHistory called");
