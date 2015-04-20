@@ -15,14 +15,16 @@ describe('dbUtils', function() {
     hostId: 'abc',
     sessionId: 'c22',
     interval: 2000,
-    weightedAverage: 2.2
+    weightedAverage: 2.2,
+    userCount: 10
   };
   var sessionInfo2 = {
     provider: 'facebook',
     hostId: 'abc',
     sessionId: 'c28',
     interval: 2000,
-    weightedAverage: -1.1
+    weightedAverage: -1.1,
+    userCount: 20
   };
   var voteInfo = {
     guestId: 'bcd',
@@ -37,20 +39,63 @@ describe('dbUtils', function() {
 
   // All values are changed before any values are read
   before(function(done) {
-    sessionRef.set({}, function() {
-      dbUtils.updateUser(sessionInfo.provider, {id: sessionInfo.hostId, displayName: 'Dan Stemkoski'}, function() {
-        dbUtils.openSessionInDb(sessionInfo, function() {
-          dbUtils.addToDb(sessionInfo, voteInfo, function() {
-            dbUtils.addToDb(sessionInfo, voteInfo2, function() {
-              dbUtils.closeSessionInDb(sessionInfo, function() {
-                dbUtils.openSessionInDb(sessionInfo2, function() {
-                  dbUtils.closeSessionInDb(sessionInfo2, done);
+    this.timeout(10000);
+    sessionRef.set({}, function(err) {
+      if (err) {
+        console.error(err);
+      }
+      else {
+        dbUtils.updateUser(sessionInfo.provider, {id: sessionInfo.hostId, displayName: 'Dan Stemkoski'}, function(err) {
+          if (err) {
+            console.error(err);
+          }
+          else {
+            dbUtils.openSessionInDb(sessionInfo, function(err) {
+              if (err) {
+                console.error(err);
+              }
+              else {
+                dbUtils.addToDb(sessionInfo, voteInfo, function(err) {
+                  if (err) {
+                    console.error(err);
+                  }
+                  else {
+                    dbUtils.addToDb(sessionInfo, voteInfo2, function(err) {
+                      if (err) {
+                        console.error(err);
+                      }
+                      else {
+                        dbUtils.closeSessionInDb(sessionInfo, function(err) {
+                          if (err) {
+                            console.error(err);
+                          }
+                          else {
+                            dbUtils.openSessionInDb(sessionInfo2, function(err) {
+                              if (err) {
+                                console.error(err);
+                              }
+                              else {
+                                dbUtils.closeSessionInDb(sessionInfo2, function(err) {
+                                  if (err) {
+                                    console.error(err);
+                                  }
+                                  else {
+                                    done();
+                                  }
+                                });
+                              }
+                            });
+                          }
+                        });
+                      }
+                    });
+                  }
                 });
-              });
+              }
             });
-          });
+          }
         });
-      });
+      }
     });
   });
 
@@ -103,6 +148,7 @@ describe('dbUtils', function() {
       expect(data.endTime).to.be.a('number');
       expect(data.interval).to.be.a('number');
       expect(data.weightedAverage).to.be.a('number');
+      expect(data.userCount).to.be.a('number');
       expect(data.votes).to.deep.equal([voteInfo, voteInfo2]);
       done();
     });
