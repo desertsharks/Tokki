@@ -2,14 +2,14 @@
 angular.module('tokki')
   .factory('AnalysisServices', function($http) {
 
-  var session = {
+  $scope.sessions = {
+    sessionId:{
     id: '',
     url: '#/api/',
-    socket: null,
-    //Where can we get the hostId & sessionId in $scope?
     hostId: hostId,
-    sessionId: ,
+    sessionId: sessionId,
     data: data
+    }
   };
 
   // Sends a request of all sessions from a host
