@@ -23,6 +23,7 @@ exports.SessionModel = Backbone.Model.extend({
   defaults: function() {
     return {
       votes: new VotesCollection(),
+      startTime: Date.now(),
 
       // Used to compute current average
       sumVoteVals: 0,
