@@ -14,7 +14,7 @@ module.exports = function(passport) {
   });
 
   // Facebook authentication
-  var facebookAuth = process.env.USER.toLowerCase() === 'root' ? config.facebookAuth.prod : config.facebookAuth.dev; // Presumably there's a better test than simply port
+  var facebookAuth = process.env.USER && process.env.USER.toLowerCase() === 'root' ? config.facebookAuth.prod : config.facebookAuth.dev; // Presumably there's a better test than user
   facebookAuth.profileFields = ['id', 'displayName'];
   passport.use(new FacebookStrategy(facebookAuth,
     function(accessToken, refreshToken, profile, done) {
