@@ -71,7 +71,8 @@ exports.closeSessionInDb = function(sessionInfo, cb) {
   cb = cb || defaultCb('Failed to close session');
   sessionRef(sessionInfo).update({
     endTime: Firebase.ServerValue.TIMESTAMP,
-    weightedAverage: sessionInfo.weightedAverage
+    weightedAverage: sessionInfo.weightedAverage,
+    userCount: sessionInfo.userCount
   }, cb);
 };
 
@@ -87,9 +88,11 @@ exports.addToDb = function(sessionInfo, voteInfo, cb) {
 // Intended to retrieve sessions for host to choose a session from
 // Returns data in the form on an array sorted with latest first: [
 //   {
-//     startTime: 1429426355540,
 //     sessionId: c22,
-//     weightedAverage: 1.212
+//     startTime: 1429426355540,
+//     duration: 28420345,
+//     weightedAverage: 1.212,
+//     userCount: 2306
 //   },
 //   ...
 // ]
@@ -104,9 +107,11 @@ exports.getSessionsFromDb = function(userInfo, cb) {
       gatherChildren(sessionsRef(userInfo), Object.keys(snapshot.val()).length, function(results, snapshot) {
         var session = snapshot.val();
         results.unshift({
-          startTime: session.startTime,
           sessionId: snapshot.key(),
-          weightedAverage: session.weightedAverage
+          startTime: session.startTime,
+          duration: session.endTime - session.startTime,
+          weightedAverage: session.weightedAverage,
+          userCount: session.userCount
         });
       }, cb);
     }, function (errorObject) {
@@ -118,6 +123,8 @@ exports.getSessionsFromDb = function(userInfo, cb) {
 // Returns data in the form of an object: {
 //   startTime: 1429426355540,
 //   endTime: 1429426355326,
+//   weightedAverage: 2.2,
+//   userCount: 5,
 //   votes: [
 //     {
 //       guestId: 'bcd',
@@ -133,19 +140,13 @@ exports.getSessionFromDb = function(sessionInfo, cb) {
     return cb('getSessionFromDb failed: sessionInfo params not specified');
   }
 
-  var sessionResults = {};
   sessionRef(sessionInfo).once('value', function(snapshot) {
       var sessionObj = snapshot.val();
-      sessionResults.startTime = sessionObj.startTime;
-      sessionResults.endTime = sessionObj.endTime;
-      sessionResults.interval = sessionObj.interval;
-      sessionResults.weightedAverage = sessionObj.weightedAverage;
-
       gatherChildren(sessionRef(sessionInfo).child('votes'), Object.keys(sessionObj.votes).length, function(results, snapshot) {
           results.push(snapshot.val());
         }, function(err, data) {
-          sessionResults.votes = data;
-          cb(err, sessionResults);
+          sessionObj.votes = data;
+          cb(err, sessionObj);
       });
     }, function (errorObject) {
       return cb('Reading from db failed: ' + errorObject.code);
