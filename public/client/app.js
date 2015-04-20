@@ -41,6 +41,6 @@ angular.module('tokki')
       url: '/hostAnalysisView',
       templateUrl: './views/hostAnalysisView.html',
       controller: 'AnalysisController'
-    })
+    });
 
 });
