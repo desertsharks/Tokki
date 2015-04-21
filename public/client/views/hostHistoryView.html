@@ -1,19 +1,29 @@
-<!-- This page will contain a list of a host"s historic session links to view -->
+<!-- A list of a host's historic sessions.
+ Links to Analysis view per session -->
 <h3>Select a session:</h3>
-<!-- Where historic sessions can be appended -->
-<table align="center">
-<tbody ng-app="tokki" ng-controller="AnalysisController">
-<!--Columns declared -->
-<tr><th> Session ID</th><th>Start Time</th><th>Duration</th><th>Average</th><th>User Count</th></tr>
-<!-- Additional sessions defined and appended-->
-<!--<tr><td colspan="5" ></td></tr> -->
-<tr ng:repeat="session in sessions | orderBy: session.startTime">
-  <td><!--<a href = "#/api/"+session.id > -->{{session.sessionId}} </td>
-  <td>{{session.startTime}}</td>
-  <td>{{session.duration}}</td>
-  <td>{{session.weightedAverage}}</td>
-  <td>{{session.userCount}}</td>
-</tr>
-<!--<tr><td colspan="5"></tr> -->
+<!-- Where historic sessions are appended -->
+<div ng-app ng-model="tokki">
+<table align="center" ng-controller="AnalysisController">
+  <tbody>
+    <tr>
+      <th>Session ID</th>
+      <th>Start Time</th>
+      <th>Duration (min)</th>
+      <th>Average</th>
+      <th>User Count</th>
+    </tr>
+    <!-- Additional sessions appended-->
+    <!--<tr><td colspan="5" ></td></tr> -->
+    <tr ng-repeat="session in sessions | orderBy: session.startTime">
+      <td><a href = "#/api/"+session.id >{{session.sessionId}} </td>
+      <td><mydate>{{ session.startTime | date:'yyyy-MM-dd HH:mm:ss '}}</mydate></td>
+      <!--Duration is in milliseconds (ms)
+          Divided to represent minutes, one sig fig-->
+      <td>{{session.duration/1000/60 | number:1}}</td>
+      <td>{{session.weightedAverage}}</td>
+      <td>{{session.userCount}}</td>
+      </tr>
+      <!--<tr><td colspan="5"></tr> -->
+  </tbody>
 </table>
-</form>
+
