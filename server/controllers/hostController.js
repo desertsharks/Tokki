@@ -20,6 +20,7 @@ exports.logout = function(req, res) {
 
 // Return a sessionId
 // Begins listening to a session
+// TODO: Make it so anonymous sessions can be saved afterwards
 exports.registerSession = function(req, res) {
   var hostInfo = req.session ? req.session.passport.user : undefined;
   var sessionId = sessions.addNewSession({
