@@ -10,6 +10,7 @@ exports.SessionModel = Backbone.Model.extend({
     if (this.get('autoUpdate')) {
       this.set('intervalObject', setInterval(this._update.bind(this), this.get('interval')));
     }
+    this.cid = this.get('cid');
     dbUtils.openSessionInDb({
         provider: this.get('provider'),
         hostId: this.get('hostId'),
