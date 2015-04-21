@@ -20,11 +20,12 @@ exports.logout = function(req, res) {
 
 // Return a sessionId
 // Begins listening to a session
+// TODO: Make it so anonymous sessions can be saved afterwards
 exports.registerSession = function(req, res) {
-  var hostInfo = req.session.passport.user;
+  var hostInfo = req.session ? req.session.passport.user : undefined;
   var sessionId = sessions.addNewSession({
-    provider: hostInfo.provider,
-    hostId: hostInfo.hostId,
+    provider: hostInfo ? hostInfo.provider : undefined,
+    hostId: hostInfo ? hostInfo.hostId : undefined,
     cb: function() {
       socketUtils.init(sessionId, function() {
         res.send(sessionId); // Client will redirect to /#/host/sessionId

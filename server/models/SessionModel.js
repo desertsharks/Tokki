@@ -44,7 +44,8 @@ exports.SessionModel = Backbone.Model.extend({
       hostId: null,
 
       // Lazy way to avoid collisions
-      cid: Math.random().toString(36).substring(2)
+      // substring 2 maxes at length of 16
+      cid: Math.random().toString(36).substring(12)
     };
   },
 
