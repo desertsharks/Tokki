@@ -16,11 +16,11 @@
     <!--<tr><td colspan="5" ></td></tr> -->
     <tr ng-repeat="session in sessions | orderBy: session.startTime">
       <td><a href = "#/api/"+session.id >{{session.sessionId}} </td>
-      <td><mydate>{{ session.startTime | date:'yyyy-MM-dd HH:mm:ss '}}</mydate></td>
+      <td><mydate>{{ session.startTime | date:'yyyy-MM-dd HH:mm'}}</mydate></td>
       <!--Duration is in milliseconds (ms)
           Divided to represent minutes, one sig fig-->
       <td>{{session.duration/1000/60 | number:1}}</td>
-      <td>{{session.weightedAverage}}</td>
+      <td>{{session.weightedAverage | number:1}}</td>
       <td>{{session.userCount}}</td>
       </tr>
       <!--<tr><td colspan="5"></tr> -->
